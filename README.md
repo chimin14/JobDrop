@@ -69,6 +69,12 @@ Unlike international platforms, **JobDrop is hyper-localized**, providing:
 
 ---
 
+## 🧑‍💼 Team Leadership
+
+**Amina Jusić** serves as our official group representative and visionary leader, guiding the development and execution of JobDrop with clarity and purpose.
+
+---
+
 ## 🔚 Conclusion
 
 **JobDrop** represents a meaningful step forward for the gig economy in Bosnia and Herzegovina. With its emphasis on speed, trust, and accessibility, it offers a practical solution to both job seekers and providers in an evolving market. More than a product, JobDrop is a platform for empowerment and economic mobility.
@@ -76,3 +82,4 @@ Unlike international platforms, **JobDrop is hyper-localized**, providing:
 ---
 
 > **Build locally. Work directly. Grow together.**
+
