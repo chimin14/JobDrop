@@ -21,8 +21,8 @@ export default function Home() {
             </code>
             .
           </li>
-          <li className="tracking-[-.01em]"><a href="/test">
-            Save and see your changes instantly.</a>
+          <li className="tracking-[-.01em]"><Link href="/test">
+            Save and see your changes instantly.</Link>
           </li>
         </ol>
 
