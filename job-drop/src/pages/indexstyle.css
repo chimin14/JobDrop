@@ -1,0 +1,126 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: black;
+    height: 3900px;
+}
+.header-container {
+    width: 100%;
+    padding: 20px 0;
+    background-color: #399283;
+    color: white;
+    text-align: left;
+}
+.button-container {
+    width: 100%;
+    height: 50px;
+    background-color: #ac1212;
+    margin: 0;
+    position: relative;
+    top: 0;
+}
+.button1, .button2, .button3, .button4, .button5, .button6, .button7 {
+    width: 16%;
+    height: 80%;
+    background-color: #ac1212;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2px;
+    text-align: center;
+    text-decoration: solid;
+    outline: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button1:hover, .button2:hover, .button3:hover, .button4:hover, .button5:hover, .button6:hover, .button7:hover {
+    background-color: #ac1212;
+    color: #f4f4f4;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #ac1212;
+}
+.slider-container {
+    width: 100%;
+    height: 300px;
+    background-color: #c2cc32;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 300%;
+}
+
+/*.slide {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    background-color: #661313;
+}
+
+.slider-buttons {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.slider-button {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+}
+
+.slider-button:hover {
+    background-color: #ddd;
+}*/
+.extra-section-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.extra-section1, .extra-section2, .extra-section3 { 
+    width: 30%;
+    height: 50px;
+    background-color: #696d37;
+    margin: 0 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} /*OVDJE NE ZNAM STAVITI IH DA SU SIDE BY SIDE*/
