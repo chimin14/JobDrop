@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import Link from "next/link";
+import Image from "next/image";
+
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,9 +22,18 @@ export default function Navbar() {
     <>
       {/* Top navbar */}
       <nav className="bg-white px-6 py-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-bold text-blue-700">
-          JobDrop
+      <Link href="/" className="flex items-center">
+            <Image
+            src="/logo.svg"
+            alt="JobDrop Logo"
+            width={40}
+            height={40}
+            className="mr-2"
+            />
+            <span className="text-xl font-bold text-blue-700 hidden sm:inline">Job</span>
+            <span className="text-xl font-bold text-yellow-500 hidden sm:inline">Drop</span>
         </Link>
+
 
         {/* Desktop Links */}
         <div className="hidden md:flex gap-6 items-center">

@@ -8,7 +8,7 @@ export default function LoginPage() {
         <input type="email" placeholder="Email" className="w-full border px-4 py-2 rounded" />
         <input type="password" placeholder="Password" className="w-full border px-4 py-2 rounded" />
         <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Login</button>
-        <p className="text-sm text-center text-gray-600 mt-2">Don't have an account? <a href="/register" className="text-blue-600">Register</a></p>
+        <p className="text-sm text-center text-gray-600 mt-2">Do not have an account? <a href="/register" className="text-blue-600">Register</a></p>
       </form>
     </main>
   );

@@ -23,7 +23,7 @@ export default function ProfilePage() {
         <div>
           <h3 className="text-lg font-semibold text-blue-800 mb-2">About Me</h3>
           <p className="text-gray-700">
-            I'm a university student looking for flexible part-time jobs to support my studies. I'm reliable,
+            I am a university student looking for flexible part-time jobs to support my studies. I am reliable,
             communicative, and enjoy working with people.
           </p>
         </div>

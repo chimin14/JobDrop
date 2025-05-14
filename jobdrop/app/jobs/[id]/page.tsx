@@ -1,12 +1,13 @@
 "use client";
 
-import { useParams } from "next/navigation";
+//import { useParams } from "next/navigation";
 
 export default function JobDetailPage() {
-  const { id } = useParams();
+  // const { id } = useParams();
 
   // Later: fetch job data by `id`
   const job = {
+    
     title: "Help with groceries",
     description: "Carry groceries to 4th floor. Takes ~30 minutes.",
     location: "Ilidža",

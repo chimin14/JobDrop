@@ -11,7 +11,6 @@ export default function Home() {
       <HowItWorks />
       <CallToAction />
       <Testimonials />
-      <Footer />
     </main>
   );
 }

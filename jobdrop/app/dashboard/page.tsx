@@ -53,7 +53,7 @@ export default function DashboardPage() {
         {selectedTab === "settings" && (
           <div>
             <h1 className="text-2xl font-bold text-blue-900 mb-4">Account Settings</h1>
-            <p className="text-gray-600">This is where you'd change your info later.</p>
+            <p className="text-gray-600">This is where you would change your info later.</p>
           </div>
         )}
       </section>
