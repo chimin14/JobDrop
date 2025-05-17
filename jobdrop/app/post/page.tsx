@@ -30,46 +30,42 @@ export default function PostJobPage() {
   const [salaryMin, setSalaryMin] = useState('');
   const [salaryMax, setSalaryMax] = useState('');
   const [publishType, setPublishType] = useState('Public');
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => setMounted(true), []);
 
-  const isFormValid = title && description && location && employerType &&
-    industry && jobFunction && department && employmentType &&
-    experience && positions && salaryMin && salaryMax && publishType;
-
-  const handleTitleChange = (value: string) => {
-    setTitle(value);
-    setFilteredTitles(
-      value.length > 0
-        ? jobTitleSuggestions.filter((t) =>
-            t.toLowerCase().includes(value.toLowerCase())
-          )
-        : []
-    );
-  };
-
-  const handleLocationChange = (value: string) => {
-    setLocation(value);
-    setFilteredLocations(
-      value.length > 0
-        ? locationOptions.filter((loc) =>
-            loc.toLowerCase().includes(value.toLowerCase())
-          )
-        : []
-    );
+  const validateFields = () => {
+    const fieldErrors: { [key: string]: boolean } = {};
+    if (!title) fieldErrors.title = true;
+    if (!description) fieldErrors.description = true;
+    if (!location) fieldErrors.location = true;
+    if (!industry) fieldErrors.industry = true;
+    if (!jobFunction) fieldErrors.jobFunction = true;
+    if (!department) fieldErrors.department = true;
+    if (!experience) fieldErrors.experience = true;
+    if (!positions) fieldErrors.positions = true;
+    if (!salaryMin) fieldErrors.salaryMin = true;
+    if (!salaryMax) fieldErrors.salaryMax = true;
+    setErrors(fieldErrors);
+    return Object.keys(fieldErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateFields()) return;
+
+    alert("Job submitted successfully (locally).");
     console.log({
       title, description, location, employerType, industry,
       jobFunction, department, employmentType, experience,
       positions, salaryMin, salaryMax, publishType
     });
-    alert("Job submitted successfully (locally).");
   };
 
   if (!mounted) return null;
+
+  const inputClass = (field: string) =>
+    `mt-1 w-full border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded px-4 py-2`;
 
   return (
     <main className="p-6 max-w-4xl mx-auto">
@@ -84,68 +80,47 @@ export default function PostJobPage() {
           <label className="block text-sm font-medium text-gray-700">Job Title</label>
           <input
             type="text"
-            className="mt-1 w-full border border-gray-300 rounded px-4 py-2"
+            className={inputClass('title')}
             value={title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            required
+            onChange={(e) => {
+              const val = e.target.value;
+              setTitle(val);
+              setFilteredTitles(
+                val.length > 0 ? jobTitleSuggestions.filter((t) => t.toLowerCase().includes(val.toLowerCase())) : []
+              );
+            }}
           />
-          {filteredTitles.length > 0 && (
-            <ul className="border mt-1 bg-white shadow-sm rounded text-sm">
-              {filteredTitles.map((t) => (
-                <li
-                  key={t}
-                  onClick={() => {
-                    setTitle(t);
-                    setFilteredTitles([]);
-                  }}
-                  className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
-          )}
+          {errors.title && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Description */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea
-            className="mt-1 w-full border border-gray-300 rounded px-4 py-2 min-h-[120px]"
+            className={inputClass('description')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             placeholder="Enter a detailed job description..."
           />
+          {errors.description && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Location */}
-        <div className="relative">
+        <div>
           <label className="block text-sm font-medium text-gray-700">Location</label>
           <input
             type="text"
-            placeholder="Start typing location..."
-            className="w-full border border-gray-300 rounded px-4 py-2"
+            className={inputClass('location')}
             value={location}
-            onChange={(e) => handleLocationChange(e.target.value)}
-            required
+            onChange={(e) => {
+              const val = e.target.value;
+              setLocation(val);
+              setFilteredLocations(
+                val.length > 0 ? locationOptions.filter((loc) => loc.toLowerCase().includes(val.toLowerCase())) : []
+              );
+            }}
           />
-          {filteredLocations.length > 0 && (
-            <ul className="absolute z-10 bg-white w-full border rounded mt-1 max-h-52 overflow-auto shadow-md">
-              {filteredLocations.map((loc) => (
-                <li
-                  key={loc}
-                  onClick={() => {
-                    setLocation(loc);
-                    setFilteredLocations([]);
-                  }}
-                  className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                >
-                  {loc}
-                </li>
-              ))}
-            </ul>
-          )}
+          {errors.location && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Employer */}
@@ -163,31 +138,14 @@ export default function PostJobPage() {
 
         {/* Industry */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Choose an Industry</label>
-          <select
+          <label className="block text-sm font-medium text-gray-700">Industry</label>
+          <input
+            type="text"
+            className={inputClass('industry')}
             value={industry}
             onChange={(e) => setIndustry(e.target.value)}
-            className="w-full border border-gray-300 rounded px-4 py-2 bg-white"
-            required
-          >
-            <option value="">All Industries</option>
-            <option>Administrative & Business Operations</option>
-            <option>Architecture & Engineering</option>
-            <option>Cleaning & Grounds Maintenance</option>
-            <option>Community & Human Services</option>
-            <option>Construction & Labor</option>
-            <option>Creative & Design</option>
-            <option>Customer Support</option>
-            <option>Education & Training</option>
-            <option>Healthcare & Wellness</option>
-            <option>Hospitality & Food Service</option>
-            <option>IT & Software Development</option>
-            <option>Legal</option>
-            <option>Marketing & Advertising</option>
-            <option>Retail & Sales</option>
-            <option>Transportation & Delivery</option>
-            <option>Other</option>
-          </select>
+          />
+          {errors.industry && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Job Function */}
@@ -195,11 +153,11 @@ export default function PostJobPage() {
           <label className="block text-sm font-medium text-gray-700">Job Function</label>
           <input
             type="text"
+            className={inputClass('jobFunction')}
             value={jobFunction}
             onChange={(e) => setJobFunction(e.target.value)}
-            className="mt-1 w-full border border-gray-300 rounded px-4 py-2"
-            required
           />
+          {errors.jobFunction && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Department */}
@@ -207,11 +165,11 @@ export default function PostJobPage() {
           <label className="block text-sm font-medium text-gray-700">Department</label>
           <input
             type="text"
+            className={inputClass('department')}
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
-            className="mt-1 w-full border border-gray-300 rounded px-4 py-2"
-            required
           />
+          {errors.department && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
         </div>
 
         {/* Employment Details Section */}
@@ -235,75 +193,56 @@ export default function PostJobPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Positions</label>
-              <input
-                type="number"
-                value={positions}
-                onChange={(e) => setPositions(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
-                placeholder="e.g. 1"
-                required
-              />
-            </div>
-
-            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
               <input
                 type="text"
+                className={inputClass('experience')}
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
                 placeholder="e.g. 1-3"
-                required
               />
+              {errors.experience && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Salary From</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Positions</label>
               <input
                 type="number"
+                className={inputClass('positions')}
+                value={positions}
+                onChange={(e) => setPositions(e.target.value)}
+              />
+              {errors.positions && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Min Salary</label>
+              <input
+                type="number"
+                className={inputClass('salaryMin')}
                 value={salaryMin}
                 onChange={(e) => setSalaryMin(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
-                placeholder="e.g. 100000"
-                required
               />
+              {errors.salaryMin && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Salary Upto</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Max Salary</label>
               <input
                 type="number"
+                className={inputClass('salaryMax')}
                 value={salaryMax}
                 onChange={(e) => setSalaryMax(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
-                placeholder="e.g. 200000"
-                required
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Publishing Type</label>
-              <select
-                value={publishType}
-                onChange={(e) => setPublishType(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
-              >
-                <option>Public</option>
-                <option>Internal</option>
-              </select>
+              {errors.salaryMax && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
             </div>
           </div>
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
-          className={`px-6 py-2 rounded transition ${
-            isFormValid
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-          disabled={!isFormValid}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
         >
           Submit Job
         </button>
