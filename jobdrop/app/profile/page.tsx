@@ -19,6 +19,7 @@ export default function ProfilePage() {
       </main>
     );
   }
+    
 
   return (
     <main className="p-6 max-w-3xl mx-auto">
@@ -29,7 +30,7 @@ export default function ProfilePage() {
         {/* ✅ Profile Header */}
         <div className="flex items-center gap-6">
           <img
-            src={profile.photo || '/images/pic_default.jpg'}
+            src={profile.photo || 'jobdrop/public/pic_default.png'}
             alt="Profile"
             className="w-28 h-28 rounded-full object-cover border border-gray-300"
           />
