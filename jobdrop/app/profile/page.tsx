@@ -22,13 +22,14 @@ export default function ProfilePage() {
 
   return (
     <main className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-blue-900 mb-6">Candidate CV</h1>
+      {/* ✅ Title */}
+      <h1 className="text-3xl font-bold text-blue-900 mb-6">My Profile</h1>
 
       <div className="bg-white shadow rounded-lg p-6 space-y-8">
-        {/* Profile Header */}
+        {/* ✅ Profile Header */}
         <div className="flex items-center gap-6">
           <img
-            src={profile.photo || 'https://via.placeholder.com/120'}
+            src={profile.photo || '/images/pic_default.jpg'}
             alt="Profile"
             className="w-28 h-28 rounded-full object-cover border border-gray-300"
           />
@@ -40,13 +41,13 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Bio */}
+        {/* ✅ Bio */}
         <section>
           <h3 className="text-lg font-semibold text-blue-800 mb-2">About</h3>
           <p className="text-gray-700">{profile.bio}</p>
         </section>
 
-        {/* Skills */}
+        {/* ✅ Skills */}
         <section>
           <h3 className="text-lg font-semibold text-blue-800 mb-2">Skills</h3>
           <ul className="flex flex-wrap gap-3">
@@ -58,7 +59,7 @@ export default function ProfilePage() {
           </ul>
         </section>
 
-        {/* Experience */}
+        {/* ✅ Experience */}
         <section>
           <h3 className="text-lg font-semibold text-blue-800 mb-4">Experience</h3>
           <div className="space-y-6">
@@ -72,6 +73,7 @@ export default function ProfilePage() {
           </div>
         </section>
 
+        {/* ✅ Edit Button */}
         <div className="pt-4">
           <a href="/profile/edit">
             <button className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">

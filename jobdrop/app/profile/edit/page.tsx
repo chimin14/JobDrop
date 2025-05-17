@@ -26,27 +26,18 @@ export default function EditProfilePage() {
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    const base64String = reader.result?.toString();
-    if (base64String) {
-      setImage(base64String); // ← This will trigger preview
-    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result?.toString();
+      if (base64String) {
+        setImage(base64String);
+      }
+    };
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-};
-
-  {image && (
-    <img
-      src={image}
-      alt="Preview"
-      className="mt-4 w-24 h-24 rounded-full object-cover border"
-    />
-  )}
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,19 +60,34 @@ export default function EditProfilePage() {
       <h1 className="text-3xl font-bold text-blue-900 mb-6">Edit Profile</h1>
 
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-6 space-y-6">
+
         {/* Upload Photo */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
+        <div className="flex flex-col items-center gap-3">
           <input
+            id="upload-photo"
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
-            className="mt-1 block w-full text-sm text-gray-500"
+            className="hidden"
           />
-          {image && <img src={image} alt="Preview" className="mt-4 w-24 h-24 rounded-full object-cover" />}
+
+          <label
+            htmlFor="upload-photo"
+            className="cursor-pointer bg-blue-100 text-blue-900 px-6 py-2 rounded-full hover:bg-blue-200 transition text-sm font-medium"
+          >
+            📷 Add Profile Picture
+          </label>
+
+          {image && (
+            <img
+              src={image}
+              alt="Uploaded Preview"
+              className="w-24 h-24 rounded-full object-cover border border-gray-300"
+            />
+          )}
         </div>
 
-        {/* Name, Location, Email, Phone */}
+        {/* Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Full Name</label>
           <input
@@ -93,6 +99,7 @@ export default function EditProfilePage() {
           />
         </div>
 
+        {/* Location */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Location</label>
           <input
@@ -104,6 +111,7 @@ export default function EditProfilePage() {
           />
         </div>
 
+        {/* Email */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
@@ -114,6 +122,7 @@ export default function EditProfilePage() {
           />
         </div>
 
+        {/* Phone */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Phone</label>
           <input
@@ -147,7 +156,7 @@ export default function EditProfilePage() {
           />
         </div>
 
-        {/* Experience */}
+        {/* Experience Section */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Experience</label>
           {experiences.map((exp, idx) => (
@@ -193,6 +202,7 @@ export default function EditProfilePage() {
           </button>
         </div>
 
+        {/* Submit */}
         <div className="text-right">
           <button
             type="submit"
