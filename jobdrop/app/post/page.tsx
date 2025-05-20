@@ -219,9 +219,8 @@ export default function PostJobPage() {
                 onChange={(e) => setEmploymentType(e.target.value)}
                 className="w-full border border-gray-300 rounded px-4 py-2"
               >
-                <option>Full Time</option>
-                <option>Part Time</option>
-                <option>Contract</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
                 <option>Temporary</option>
                 <option>Internship</option>
               </select>
