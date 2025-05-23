@@ -49,10 +49,17 @@ const Footer = () => {
                 <h2 className="mb-6 text-sm font-semibold uppercase">Legal</h2>
                 <ul className="text-gray-100 font-medium">
                   <li className="mb-4">
-                    <Link href="/terms" className="hover:underline">Terms & Conditions</Link>
+                    <a
+                    href="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                    >
+                      Terms & Conditions
+                      </a>
                   </li>
                   <li className="mb-4">
-                    <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link> 
+                    <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
                   </li>
                 </ul>
               </div>
