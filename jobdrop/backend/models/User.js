@@ -14,5 +14,9 @@ const userSchema = new mongoose.Schema({
     enum: ['seeker', 'provider'],
     required: true,
   },
+  name: String,
+  bio: String,
+  companyName: String,
+  avatar: String,
 }, { timestamps: true });
 module.exports = mongoose.model('User', userSchema);
