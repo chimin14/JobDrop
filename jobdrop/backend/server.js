@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,8 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/protected', require('./routes/protected'));
+app.use('/api/jobPostings', require('./routes/jobPostings'));
+
 
 // ---- DB & SERVER ----
 mongoose.connect(process.env.MONGODB_URI, {
