@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Sidebar from '@/components/Sidebar';
-import Card from '@/components/Cards'; // <-- new Tailwind card
+import Sidebar from '@/components/home/Sidebar';
+import Card from '@/components/home/Cards'; // <-- new Tailwind card
 
 const tabs = ['My Jobs', 'Applications', 'Messages', 'Settings'];
 
