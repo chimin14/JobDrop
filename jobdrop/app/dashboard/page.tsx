@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/home/Sidebar';
-import Card from '@/components/home/Cards'; // <-- new Tailwind card
+import Card from '@/components/home/Cards';
+import SettingsPage from '@/components/home/SettingsPage';
 
 const tabs = ['My Jobs', 'Applications', 'Messages', 'Settings'];
 
@@ -122,10 +123,7 @@ export default function DashboardPage() {
 
   return (
     <main className="flex min-h-screen bg-gray-100 text-gray-900">
-      <Sidebar
-        categories={['My Jobs', 'Applications', 'Messages', 'Settings']}
-        onCategorySelect={setSelectedTab}
-      />
+      <Sidebar categories={tabs} onCategorySelect={setSelectedTab} />
 
       <section className="flex-1 p-8 ml-0 md:ml-64 transition-all duration-300">
         {['My Jobs', 'Applications', 'Messages'].includes(selectedTab) && (
@@ -237,6 +235,8 @@ export default function DashboardPage() {
             )}
           </>
         )}
+
+        {selectedTab === 'Settings' && <SettingsPage />}
       </section>
     </main>
   );
