@@ -6,7 +6,7 @@ require('dotenv').config();
 // Login, Register, Security Check and Job Routes
 const authRoutes = require('./routes/auth');
 const protectedRoutes = require('./routes/protected');
-const jobRoutes = require('./routes/jobs');
+const jobPostingsRoutes = require('./routes/jobPostings');
 
 const app = express();
 app.use(cors());
@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use('/api', authRoutes);
 app.use('/api', protectedRoutes);
-app.use('/api', jobRoutes);
+app.use('/api/jobPostings', jobPostingsRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
