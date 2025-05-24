@@ -11,208 +11,232 @@ type JobCard = {
   description: string;
   date: string;
   notes?: string;
-  photo?: string;
-  link?: string;
+  location: string;
+  industry: string;
+  qualifications: string;
+  jobFunction: string;
+  department: string;
+  employmentType: string;
+  experienceLevel: string;
+  positions: string;
+  salaryRange: string;
 };
 
 type Message = {
   from: string;
   subject: string;
-  preview: string;
   date: string;
-  link?: string;
+  message: string;
+  profileLink: string;
 };
 
-// MOCK DATA
-const mockPostedJobs: JobCard[] = [
+const postedJobs: JobCard[] = [
   {
-    title: "Deliver documents to City Hall",
-    description: "Small task, about 45 minutes total.",
-    date: "May 5, 2025",
-    notes: "Documents must be delivered before noon.",
-    link: "#"
+    title: 'Frontend Developer',
+    description: 'Create and maintain UI components for web apps.',
+    date: 'May 26, 2025',
+    notes: 'React, Tailwind, Git experience required.',
+    location: 'Sarajevo',
+    industry: 'IT & Software Development',
+    qualifications: '2+ years experience, Bachelor’s degree in CS.',
+    jobFunction: 'Development',
+    department: 'Engineering',
+    employmentType: 'Weekly',
+    experienceLevel: '2',
+    positions: '1',
+    salaryRange: '$800 - $1200',
   },
   {
-    title: "Math tutoring for 9th grade",
-    description: "Online or in-person, 2x weekly.",
-    date: "May 2, 2025",
-    notes: "Student needs help with algebra and geometry.",
-    link: "#"
-  },
-  {
-    title: "Window cleaning",
-    description: "First floor apartment, 4 windows total.",
-    date: "May 3, 2025",
-    notes: "Cleaning supplies provided.",
-    link: "#"
-  },
-  {
-    title: "Pet sitting (cat)",
-    description: "Feed and check litterbox daily.",
-    date: "May 1, 2025",
-    notes: "Needs to be available for 3 days.",
-    link: "#"
-  },
-  {
-    title: "Move small furniture",
-    description: "Help move items from storage to apartment.",
-    date: "May 4, 2025",
-    notes: "No elevator, second floor walk-up.",
-    link: "#"
+    title: 'Marketing Intern',
+    description: 'Assist with social media and email campaigns.',
+    date: 'May 25, 2025',
+    notes: 'Remote work possible.',
+    location: 'Remote',
+    industry: 'Marketing & Advertising',
+    qualifications: 'Good writing skills, basic analytics knowledge.',
+    jobFunction: 'Outreach',
+    department: 'Marketing',
+    employmentType: 'Internship',
+    experienceLevel: '0-1',
+    positions: '2',
+    salaryRange: '$200 - $400',
   },
 ];
 
 const appliedJobs: JobCard[] = [
   {
-    title: "Gardening assistance",
-    description: "Mow lawn and trim hedges.",
-    date: "April 30, 2025",
-    notes: "Must bring your own tools.",
-    link: "#"
+    title: 'Customer Support Agent',
+    description: 'Respond to customer inquiries via email and chat.',
+    date: 'May 22, 2025',
+    notes: 'Shifts include evenings and weekends.',
+    location: 'Zenica',
+    industry: 'Customer Support',
+    qualifications: 'Fluent in English, strong typing skills.',
+    jobFunction: 'Support',
+    department: 'Service',
+    employmentType: 'Weekly',
+    experienceLevel: '1',
+    positions: '3',
+    salaryRange: '$350 - $500',
   },
   {
-    title: "Fix kitchen faucet",
-    description: "Leaking issue, needs tightening or replacement.",
-    date: "April 29, 2025",
-    notes: "Experienced handyman preferred.",
-    link: "#"
-  },
-  {
-    title: "Grocery shopping for elderly neighbor",
-    description: "Pick up a small list of groceries.",
-    date: "May 1, 2025",
-    notes: "Reimbursement on delivery.",
-    link: "#"
-  },
-  {
-    title: "Evening babysitting",
-    description: "Watch two children for 3 hours.",
-    date: "May 3, 2025",
-    notes: "Dinner will be prepared beforehand.",
-    link: "#"
-  },
-  {
-    title: "Deliver flower bouquet",
-    description: "Deliver to address in Ilidža by 4PM.",
-    date: "May 2, 2025",
-    notes: "Flowers will be pre-arranged.",
-    link: "#"
+    title: 'Warehouse Assistant',
+    description: 'Sort and pack items for delivery.',
+    date: 'May 21, 2025',
+    notes: 'Must be able to lift 20kg boxes.',
+    location: 'Banja Luka',
+    industry: 'Transportation & Delivery',
+    qualifications: 'Physical fitness, punctuality.',
+    jobFunction: 'Logistics',
+    department: 'Distribution',
+    employmentType: 'Weekly',
+    experienceLevel: '0-1',
+    positions: '2',
+    salaryRange: '$300 - $450',
   },
 ];
 
 const messages: Message[] = [
   {
-    from: "Selma K.",
-    subject: "Your application for gardening",
-    preview: "Hi! Just wanted to confirm your availability on Saturday…",
-    date: "Apr 28, 2025",
-    link: "#"
+    from: 'Selma K.',
+    subject: 'Application for Frontend Developer',
+    date: 'May 26, 2025',
+    message: 'Hi! I just submitted an application for your Frontend Developer post. Looking forward to hearing from you!',
+    profileLink: '#',
   },
   {
-    from: "Mina Z.",
-    subject: "Babysitting request",
-    preview: "Thanks for applying — can we schedule a short call…",
-    date: "Apr 27, 2025",
-    link: "#"
-  },
-  {
-    from: "Jasmin H.",
-    subject: "Fixing kitchen faucet",
-    preview: "Hey, are you okay with bringing your own tools?",
-    date: "Apr 26, 2025",
-    link: "#"
-  },
-  {
-    from: "Lejla M.",
-    subject: "Flower delivery timing",
-    preview: "Please deliver before 4PM. Let me know when you're on the way.",
-    date: "Apr 25, 2025",
-    link: "#"
-  },
-  {
-    from: "JobDrop Team",
-    subject: "New updates to your dashboard",
-    preview: "We’ve improved the layout and fixed a few bugs!",
-    date: "Apr 24, 2025",
-    link: "#"
+    from: 'Ahmed H.',
+    subject: 'Interested in Warehouse Assistant',
+    date: 'May 25, 2025',
+    message: 'Hello! I\'d love to help with your warehouse tasks, I’m available every morning.',
+    profileLink: '#',
   },
 ];
 
 export default function DashboardPage() {
   const [selectedTab, setSelectedTab] = useState('My Jobs');
-  const [postedJobs, setPostedJobs] = useState<JobCard[]>([]);
+  const [selectedItem, setSelectedItem] = useState<JobCard | Message | null>(null);
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('postedJobs') || '[]');
-    const formatted = stored.map((job: any) => ({
-      title: job.title,
-      description: job.description || job.notes,
-      date: job.date || "Unknown date",
-      link: '#'
-    }));
-    setPostedJobs(formatted);
-  }, []);
-
-  const renderCard = (item: JobCard | Message) => {
-    const title = 'title' in item ? item.title : item.subject;
-    const description = 'description' in item ? item.description : item.preview;
-    const date = item.date;
-    const link = item.link || "#";
-
-    return (
-      <Card
-        key={title + date}
-        title={title}
-        description={description}
-        date={date}
-        link={link}
-      />
-    );
-  };
+  const isMessages = selectedTab === 'Messages';
+  const jobsToShow = selectedTab === 'My Jobs' ? postedJobs : appliedJobs;
 
   return (
     <main className="flex min-h-screen bg-gray-100 text-gray-900">
-      <Sidebar categories={tabs} onCategorySelect={setSelectedTab} />
+      <Sidebar
+        categories={['My Jobs', 'Applications', 'Messages', 'Settings']}
+        onCategorySelect={setSelectedTab}
+      />
 
       <section className="flex-1 p-8 ml-0 md:ml-64 transition-all duration-300">
-        <h1 className="text-3xl font-bold text-blue-900 mb-6">{selectedTab}</h1>
-
-        {selectedTab === 'My Jobs' && (
+        {['My Jobs', 'Applications', 'Messages'].includes(selectedTab) && (
           <>
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Mock Posted Jobs</h2>
-            <div className="flex flex-wrap gap-6 mb-10">
-              {mockPostedJobs.map(renderCard)}
+            <h1 className="text-4xl font-bold text-blue-900 mt-6 mb-2">{selectedTab}</h1>
+            <p className="text-gray-600 text-md mb-8">
+              {selectedTab === 'My Jobs'
+                ? 'This section gives you a quick overview of jobs you\'ve posted.'
+                : selectedTab === 'Applications'
+                ? 'This section shows jobs you have applied to.'
+                : 'This section shows messages sent to you by applicants.'}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(isMessages ? messages : jobsToShow).map((item: any, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelectedItem(item)}
+                  className="cursor-pointer w-full p-4 font-sans rounded-xl bg-[#f1f1f3] shadow-md hover:shadow-lg transition relative"
+                >
+                  <h3 className="text-[1.3rem] font-bold text-[#3c3852] hover:text-[#7257fa] hover:underline">
+                    {isMessages ? item.subject : item.title}
+                  </h3>
+
+                  {isMessages ? (
+                    <>
+                      <p className="text-[0.86rem] text-[#3c3852] mt-3"><strong>From:</strong> {item.from}</p>
+                      <p className="text-[0.8rem] text-[#6e6b80] mt-2">{item.date}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-[0.86rem] text-[#3c3852] mt-3"><strong>Location:</strong> {item.location}</p>
+                      <p className="text-[0.86rem] text-[#3c3852]"><strong>Industry:</strong> {item.industry}</p>
+                      <p className="text-[0.86rem] text-[#3c3852]"><strong>Department:</strong> {item.department}</p>
+                      <p className="text-[0.8rem] text-[#6e6b80] mt-2">{item.date}</p>
+                    </>
+                  )}
+
+                  <div className="absolute bottom-0 right-0 bg-[#7257fa] p-2 rounded-tl-xl rounded-br-xl hover:bg-black transition flex justify-center items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="15" width="15">
+                      <path
+                        fill="#fff"
+                        d="M13.47 17.97c-.29.29-.29.76 0 1.06.29.29.76.29 1.06 0l5.8-5.79c.69-.69.69-1.81 0-2.5l-5.8-5.8a.75.75 0 0 0-1.06 1.06L18.69 11.25H4c-.41 0-.75.34-.75.75s.34.75.75.75h14.69l-5.22 5.22z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Your Posted Jobs</h2>
-            <div className="flex flex-wrap gap-6">
-              {postedJobs.length > 0 ? postedJobs.map(renderCard) : <p className="text-gray-500">No jobs posted yet.</p>}
-            </div>
+            {/* Modal */}
+            {selectedItem && (
+              <div
+                className="fixed inset-0 z-50 bg-white/30 backdrop-blur-sm flex items-center justify-center p-4"
+                onClick={() => setSelectedItem(null)}
+              >
+                <div
+                  className="bg-white p-6 rounded-2xl w-full max-w-md shadow-xl relative"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
+                    onClick={() => setSelectedItem(null)}
+                  >
+                    ✕
+                  </button>
+
+                  {isMessages ? (
+                    <>
+                      <h2 className="text-2xl font-bold text-blue-900 mb-3">{(selectedItem as Message).subject}</h2>
+                      <p className="text-sm text-gray-600 mb-1"><strong>From:</strong> {(selectedItem as Message).from}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Date:</strong> {(selectedItem as Message).date}</p>
+                      <p className="text-sm text-gray-600 mt-4">{(selectedItem as Message).message}</p>
+
+                      <a
+                        href={(selectedItem as Message).profileLink}
+                        target="_blank"
+                        className="mt-6 inline-block bg-gray-200 text-gray-700 text-sm px-4 py-2 rounded hover:bg-gray-300 transition"
+                      >
+                        View Profile
+                      </a>
+
+                      <div className="mt-4 flex justify-end">
+                        <button
+                          onClick={() => alert('Reply clicked')}
+                          className="bg-blue-100 text-blue-800 text-sm px-4 py-2 rounded hover:bg-blue-200 flex items-center gap-1"
+                        >
+                          Reply →
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-2xl font-bold text-blue-900 mb-3">{(selectedItem as JobCard).title}</h2>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Description:</strong> {(selectedItem as JobCard).description}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Qualifications:</strong> {(selectedItem as JobCard).qualifications}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Job Function:</strong> {(selectedItem as JobCard).jobFunction}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Employment Type:</strong> {(selectedItem as JobCard).employmentType}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Experience:</strong> {(selectedItem as JobCard).experienceLevel} years</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Positions:</strong> {(selectedItem as JobCard).positions}</p>
+                      <p className="text-sm text-gray-600 mb-1"><strong>Salary Range:</strong> {(selectedItem as JobCard).salaryRange}</p>
+                      {(selectedItem as JobCard).notes && (
+                        <p className="text-sm text-gray-600"><strong>Notes:</strong> {(selectedItem as JobCard).notes}</p>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </>
         )}
-
-        {selectedTab === 'Applications' && (
-          <>
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Applications</h2>
-            <div className="flex flex-wrap gap-6">
-              {appliedJobs.map(renderCard)}
-            </div>
-          </>
-        )}
-
-        {selectedTab === 'Messages' && (
-          <>
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">Messages</h2>
-            <div className="flex flex-wrap gap-6">
-              {messages.map(renderCard)}
-            </div>
-          </>
-        )}
-
-        {selectedTab === 'Settings' && (
-          <div className="text-gray-600">Settings page coming soon.</div>
-          )}
-
       </section>
     </main>
   );
