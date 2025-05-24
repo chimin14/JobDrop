@@ -59,14 +59,7 @@ const Footer = () => {
                       </a>
                   </li>
                   <li className="mb-4">
-                    <a
-                    href="/privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                    >
-                      Privacy Policy
-                      </a>
+                    <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
                   </li>
                 </ul>
               </div>
