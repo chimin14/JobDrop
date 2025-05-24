@@ -15,8 +15,10 @@ export default function Navbar() {
     { label: "Post a Job", href: "/post" },
     { label: "Dashboard", href: "/dashboard" },
     { label: "Profile", href: "/profile" },
+    { label: "About Us", href: "/about" }, 
     { label: "Login", href: "/login" },
   ];
+  
 
   return (
     <>
