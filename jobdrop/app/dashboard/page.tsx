@@ -236,7 +236,11 @@ export default function DashboardPage() {
           </>
         )}
 
-        {selectedTab === 'Settings' && <SettingsPage />}
+        {selectedTab === 'Settings' && (
+          <div className="mt-8">
+            <SettingsPage />
+          </div>
+        )}
       </section>
     </main>
   );

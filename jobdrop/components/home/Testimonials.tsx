@@ -3,21 +3,18 @@
 const testimonials = [
   {
     name: "Selma",
-    location: "Sarajevo",
+    location: "Sarajevo, Bosnia & Herzegovina",
     text: "JobDrop helped me find kind, honest help for my mom. I trust it completely.",
-    avatar: "/default-user.png",
   },
   {
     name: "Amar",
-    location: "Ilidža",
+    location: "Ilidža, Bosnia & Herzegovina",
     text: "I earn flexible income during the week with real, local people. It’s easy and fast.",
-    avatar: "/default-user.png",
   },
   {
     name: "Lejla",
-    location: "Novo Sarajevo",
+    location: "Novo Sarajevo, Bosnia & Herzegovina",
     text: "I posted a small tutoring job and had 3 reliable offers the same day!",
-    avatar: "/default-user.png",
   },
 ];
 
@@ -35,18 +32,11 @@ export default function Testimonials() {
         {testimonials.map((t, i) => (
           <div
             key={i}
-            className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300"
+            className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-all duration-300 text-center"
           >
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={t.avatar}
-                alt={`${t.name} avatar`}
-                className="w-12 h-12 rounded-full border"
-              />
-              <div>
-                <p className="font-semibold text-blue-900">{t.name}</p>
-                <p className="text-sm text-gray-500">{t.location}</p>
-              </div>
+            <div className="mb-4">
+              <p className="font-semibold text-blue-900 text-lg">{t.name}</p>
+              <p className="text-sm text-gray-500">{t.location}</p>
             </div>
             <p className="text-gray-700 italic leading-relaxed">“{t.text}”</p>
           </div>
