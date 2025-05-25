@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 
 const categories = [
-  { name: "Babysitting", image: "/category_babysitting.svg" },
-  { name: "Cleaning", image: "/category_cleaning.svg" },
-  { name: "Tutoring", image: "/category_tutoring.svg" },
-  { name: "Delivery", image: "/category_delivery.svg" },
-  { name: "Pet Care", image: "/category_pets.svg" },
-  { name: "Tech Help", image: "/category_technology.svg" },
+  { name: "Babysitting", image: "baby.svg" },
+  { name: "Cleaning", image: "environment.svg" },
+  { name: "Tutoring", image: "tutoring.svg" },
+  { name: "Delivery", image: "delivery.svg" },
+  { name: "Pet Care", image: "pet.svg" },
+  { name: "Tech Help", image: "tech.svg" },
 ];
 
 export default function CategoryGrid() {
@@ -28,23 +28,16 @@ export default function CategoryGrid() {
           <div
             key={i}
             onClick={() => handleClick(cat.name)}
-            className="group perspective cursor-pointer"
+            className="bg-blue-50 hover:bg-blue-100 rounded-lg shadow p-4 transition cursor-pointer flex flex-col items-center"
           >
-            <div className="relative preserve-3d transition-transform duration-500 group-hover:rotate-y-180">
-              {/* Front */}
-              <div className="absolute inset-0 bg-blue-50 rounded-lg shadow p-4 flex flex-col items-center justify-center backface-hidden">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-16 h-16 object-contain mb-2"
-                />
-                <p className="text-sm font-medium text-blue-800">{cat.name}</p>
-              </div>
-              {/* Back */}
-              <div className="absolute inset-0 bg-white rounded-lg shadow p-4 flex items-center justify-center backface-hidden rotate-y-180">
-                <p className="text-xs text-gray-500">Click me →</p>
-              </div>
+            <div className="w-full h-24 flex items-center justify-center mb-3">
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="h-16 object-contain"
+              />
             </div>
+            <p className="text-sm font-medium text-blue-800">{cat.name}</p>
           </div>
         ))}
       </div>
