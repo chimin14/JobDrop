@@ -1,6 +1,9 @@
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
 const socket = require('../services/socketService');
+const messageCtr = require('../controllers/messageController');
+
+//console.log('messageCtr:', messageCtr);
 
 exports.sendMessage = async (req, res) => {
   const { recipient, text, jobId } = req.body;

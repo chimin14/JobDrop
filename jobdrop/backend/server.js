@@ -1,13 +1,17 @@
 require('dotenv').config();
+require('events').defaultMaxListeners = 20; 
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
+const bodyParser = require('body-parser');
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));       // serve local files
+app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
 
 // ---- ROUTES ----
 app.use('/api/auth', require('./routes/auth'));
@@ -18,9 +22,9 @@ app.use('/api/uploads', require('./routes/uploads'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/protected', require('./routes/protected'));
 app.use('/api/jobPostings', require('./routes/jobPostings'));
+app.use('/api/users', require('./routes/users'));
 
-
-// ---- DB & SERVER ----
+// ---- DATABASE ----
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -36,6 +40,6 @@ const io = new Server(http, { cors: { origin: '*' } });
 require('./config/socket')(io);
 require('./services/socketService').init(io);
 
-// ---- START ----
+// ---- START SERVER ----
 const PORT = process.env.PORT || 5000;
-http.listen(PORT, () => console.log(`Server on ${PORT}`));
+http.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
