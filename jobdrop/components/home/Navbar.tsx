@@ -1,41 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { HiMenu, HiX } from "react-icons/hi";
 import Link from "next/link";
 import Image from "next/image";
 
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    router.push("/login");
+  };
 
   const links = [
     { label: "Home", href: "/" },
     { label: "Browse Jobs", href: "/browse" },
     { label: "Post a Job", href: "/post" },
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "Profile", href: "/profile" },
-    { label: "About Us", href: "/about" }, 
-    { label: "Login", href: "/login" },
+    { label: "About Us", href: "/about" },
   ];
-  
 
   return (
     <>
       {/* Top navbar */}
       <nav className="bg-white px-6 py-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-      <Link href="/" className="flex items-center">
-            <Image
-            src="/logo.svg"
-            alt="JobDrop Logo"
-            width={40}
-            height={40}
-            className="mr-2"
-            />
-            <span className="text-xl font-bold text-blue-700 hidden sm:inline">Job</span>
-            <span className="text-xl font-bold text-yellow-500 hidden sm:inline">Drop</span>
+        <Link href="/" className="flex items-center">
+          <Image src="/logo.svg" alt="JobDrop Logo" width={40} height={40} className="mr-2" />
+          <span className="text-xl font-bold text-blue-700 hidden sm:inline">Job</span>
+          <span className="text-xl font-bold text-yellow-500 hidden sm:inline">Drop</span>
         </Link>
-
 
         {/* Desktop Links */}
         <div className="hidden md:flex gap-6 items-center">
@@ -48,9 +50,31 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {isLoggedIn ? (
+            <>
+              <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 transition">
+                Dashboard
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="text-red-600 hover:underline transition text-sm"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-700 hover:text-blue-600 transition">
+                Login
+              </Link>
+              <Link href="/register" className="text-gray-700 hover:text-blue-600 transition">
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
-        {/* Hamburger Icon (Mobile) */}
+        {/* Mobile Toggle */}
         <button
           className="md:hidden text-3xl text-blue-700"
           onClick={() => setMenuOpen(true)}
@@ -60,7 +84,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Sidebar Menu */}
+      {/* Mobile Sidebar */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
@@ -76,7 +100,6 @@ export default function Navbar() {
             <HiX />
           </button>
         </div>
-
         <nav className="flex flex-col p-6 space-y-4">
           {links.map((link) => (
             <Link
@@ -88,10 +111,34 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {isLoggedIn ? (
+            <>
+              <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 text-lg">
+                Dashboard
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="text-red-600 hover:underline text-left"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-700 hover:text-blue-600 text-lg">
+                Login
+              </Link>
+              <Link href="/register" className="text-gray-700 hover:text-blue-600 text-lg">
+                Register
+              </Link>
+            </>
+          )}
         </nav>
       </div>
 
-      {/* Backdrop */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-40"
