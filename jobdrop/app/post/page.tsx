@@ -52,23 +52,43 @@ export default function PostJobPage() {
     return Object.keys(fieldErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateFields()) return;
-
+  
     const newJob = {
-      title,
-      description,
-      location,
-      date: new Date().toLocaleDateString(),
-      notes: qualifications,
+      PostingID: `J${Date.now()}`,
+      Pay: Number(salaryMax),
+      JobTitle: title,
+      Description: description,
+      Time: "Flexible",
+      Location: location,
+      WorkFromLocation: employmentType === "Remote" ? "Yes" : "No",
+      Category: industry,
     };
-
-    const existing = JSON.parse(localStorage.getItem("postedJobs") || "[]");
-    localStorage.setItem("postedJobs", JSON.stringify([newJob, ...existing]));
-
-    alert("Job submitted successfully (stored locally).");
+  
+    try {
+      const res = await fetch("http://localhost:5001/api/jobPostings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newJob),
+      });
+  
+      if (res.ok) {
+        alert("✅ Job submitted and saved to MongoDB!");
+        // Optionally reset form
+        setTitle(""); setDescription(""); setLocation(""); setIndustry("");
+        setQualifications(""); setJobFunction(""); setDepartment("");
+        setExperience(""); setPositions(""); setSalaryMin(""); setSalaryMax("");
+      } else {
+        alert("❌ Submission failed.");
+      }
+    } catch (error) {
+      alert("❌ Server error.");
+      console.error("POST error:", error);
+    }
   };
+  
 
   if (!mounted) return null;
 
