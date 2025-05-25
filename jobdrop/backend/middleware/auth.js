@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Check if user is logged in
 const auth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -17,10 +16,9 @@ const auth = (req, res, next) => {
   }
 };
 
-// Restrict access to specific roles
 const requireRole = (role) => {
   return (req, res, next) => {
-    if (req.user.role !== role) {
+    if (!req.user || req.user.role !== role) {
       return res.status(403).json({ error: 'Access forbidden: wrong role' });
     }
     next();

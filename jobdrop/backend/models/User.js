@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
+
+const nameSchema = new mongoose.Schema({
+  fname: { type: String, required: true },
+  lname: { type: String }
+}, { _id: false });
+
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ['seeker', 'provider'],
-    required: true,
-  },
+  name: { type: nameSchema, required: true }
 }, { timestamps: true });
-module.exports = mongoose.model('User', userSchema);
+
+userSchema.virtual('userID').get(function () {
+  return this._id.toHexString();
+});
+
+userSchema.set('toJSON', { virtuals: true });
+
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);

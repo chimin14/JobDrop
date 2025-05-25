@@ -1,7 +1,6 @@
 const express = require('express');
-const { auth, requireRole } = require('../middleware/auth');
-
 const router = express.Router();
+const { auth, requireRole } = require('../middleware/auth');
 
 router.get('/profile', auth, (req, res) => {
   res.json({ message: 'Welcome to your profile!', user: req.user });
