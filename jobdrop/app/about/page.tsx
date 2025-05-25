@@ -37,11 +37,11 @@ export default function AboutPage() {
           shared goal: to make help more reachable and work more flexible.
         </p>
         <ul className="list-disc pl-6">
-          <li>Amina Jusić – Project Manager & Business Lead</li>
-          <li>Dejan Šućur – Frontend Developer</li>
-          <li>Harun Mezit – Backend Developer</li>
-          <li>Džejlan Čolakhodžić – Database & Data Logic</li>
-          <li>Omer Bečić – QA & Support</li>
+          <li>Amina Jusić – Front-end & Back-end Developer,Coordinator and Team Representative</li>
+          <li>Džejlan Čolakhodžić – Front-end Developer & Responsive for Design components</li>
+          <li>Harun Mezit – Back-end Developer, API endpoints, Authentication logic</li>
+          <li>Dejan Šućur – Back-end Developer, Messaging and Notifications modules</li>
+          <li>Omer Bečić – Back-end Developer, File-upload Service, Quality assurance</li>
         </ul>
 
         <p className="mt-8 text-center font-medium text-blue-700">
