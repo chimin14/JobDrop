@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Sidebar from '@/components/home/Sidebar';
 import Card from '@/components/home/Cards';
 import SettingsPage from '@/components/home/SettingsPage';
@@ -174,7 +174,6 @@ export default function DashboardPage() {
               ))}
             </div>
 
-            {/* Modal */}
             {selectedItem && (
               <div
                 className="fixed inset-0 z-50 bg-white/30 backdrop-blur-sm flex items-center justify-center p-4"

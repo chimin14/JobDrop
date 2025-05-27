@@ -1,27 +1,63 @@
-export const login = async (email: string, password: string) => {
-    const res = await fetch('http://localhost:5001/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    if (!res.ok) throw new Error('Login failed');
-    const data = await res.json();
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+// app/lib/auth.ts
+
+interface LoginResponse {
+  message: string;
+  token: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+    role?: string;
   };
-  
-  export const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  };
-  
-  export const isAuthenticated = (): boolean => {
-    return Boolean(localStorage.getItem('token'));
-  };
-  
-  export const getUser = () => {
+}
+
+interface LoginError {
+  error: string;
+}
+
+export async function login(email: string, password: string): Promise<LoginResponse> {
+  const response = await fetch('http://localhost:5001/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error((data as LoginError).error || 'Login failed');
+  }
+
+  // Store token in localStorage
+  const loginData = data as LoginResponse;
+  localStorage.setItem('token', loginData.token);
+  localStorage.setItem('user', JSON.stringify(loginData.user));
+
+  return loginData;
+}
+
+export function logout(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+}
+
+export function getToken(): string | null {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
+  return null;
+}
+
+export function getUser(): any | null {
+  if (typeof window !== 'undefined') {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
-  };
-  
+  }
+  return null;
+}
+
+export function isAuthenticated(): boolean {
+  return !!getToken();
+}
