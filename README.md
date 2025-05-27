@@ -74,6 +74,8 @@ cd JobDrop
 
 # Backend setup
 cd backend
+# Run this command in your backend directory to install zod
+npm install zod 
 npm install express@4.18
 
 # Create .env file
