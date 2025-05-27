@@ -6,7 +6,7 @@ export default function TermsPage() {
       <div className="space-y-10 text-sm leading-7 text-justify">
 
 
-        {/* 1. Introduction */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">1. Introduction</h2>
           <p>
@@ -14,7 +14,7 @@ export default function TermsPage() {
             </p>
         </section>
 
-        {/* 2. Changes to Terms */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">2. Changes to Terms</h2>
           <p>
@@ -22,7 +22,7 @@ export default function TermsPage() {
             </p>
         </section>
 
-        {/* 3. Acceptance of Agreement */}
+      
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">3. Acceptance of Agreement</h2>
           <p>
@@ -30,7 +30,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 4. User Responsibilities */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">4. User Responsibilities</h2>
           <p>As a user of JobDrop, you agree to:</p>
@@ -43,7 +43,7 @@ export default function TermsPage() {
           </ul>
         </section>
 
-        {/* 5. Prohibited Activities */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">5. Prohibited Activities</h2>
           <p>
@@ -59,7 +59,6 @@ export default function TermsPage() {
           </ul>
         </section>
 
-        {/* 6. Content Ownership */}
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">6. Content Ownership</h2>
           <p>
@@ -67,7 +66,6 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 7. Rights to Access and Use */}
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">7. Rights to Access and Use</h2>
           <p>
@@ -75,7 +73,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 8. Enforcement of Terms */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">8. Enforcement of Terms</h2>
           <p>
@@ -83,7 +81,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 9. Third-Party Links */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">9. Third-Party Links and Content</h2>
           <p>
@@ -91,7 +89,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 10. Limitation of Liability */}
+
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">10. Limitation of Liability and Disclaimers</h2>
           <p>
@@ -102,7 +100,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 11. Privacy Policy */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">11. Privacy Policy</h2>
           <p>
@@ -110,7 +108,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 12. Governing Law */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">12. Governing Law</h2>
           <p>
@@ -118,7 +116,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 13. Miscellaneous */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">13. Miscellaneous</h2>
           <p>
@@ -129,7 +127,7 @@ export default function TermsPage() {
           </p>
         </section>
 
-        {/* 14. Contact Information */}
+        
         <section>
           <h2 className="text-lg font-semibold text-blue-800 mb-2">14. Contact Information</h2>
           <p>
