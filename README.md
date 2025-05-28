@@ -82,6 +82,7 @@ npm install express@4.18
 cat <<EOF >.env
 PORT=5001
 MONGODB_URI=mongodb+srv://jobdrop:jobdrop123@cluster0.pitiiie.mongodb.net/
+JWT_SECRET=ThisIsAReallySecretKey123!@#
 EOF
 
 npm run dev   # Backend at http://localhost:5001
