@@ -37,11 +37,12 @@ export default function AboutPage() {
           shared goal: to make help more reachable and work more flexible.
         </p>
         <ul className="list-disc pl-6">
-          <li>Amina Jusić – Front-end & Back-end Developer,Coordinator and Team Representative</li>
-          <li>Džejlan Čolakhodžić – Front-end Developer & Responsive for Design components</li>
-          <li>Harun Mezit – Back-end Developer, API endpoints, Authentication logic</li>
-          <li>Dejan Šućur – Back-end Developer, Messaging and Notifications modules</li>
-          <li>Omer Bečić – Back-end Developer, File-upload Service, Quality assurance</li>
+          <li>Amina Jusić (Team Representative) – Front-end UI & state, back-end integration, Socket.IO real-time, LaTeX documentation, overall coordination</li>
+          <li>Džejlan Čolakhodžić – Front-end layouts, responsive design, component library</li>
+          <li>Harun Mezit – Back-end APIs, authentication, database schema; produced all UML diagrams</li>
+          <li>Dejan Šućur – Back-end messaging & notification modules; deployment scripts; Trello sprint management; QA</li>
+          <li>Omer Bećić – Back-end reviews/ratings, file-upload service; co-author of documentation; Figma Design</li>
+
         </ul>
 
         <p className="mt-8 text-center font-medium text-blue-700">
