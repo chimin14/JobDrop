@@ -68,16 +68,19 @@ Express  ────────────► MongoDB
 **Prerequisites:** Node.js 18+, npm, Git, MongoDB Atlas (or local MongoDB)
 
 ```bash
-# Clone repository
+# Clone Repository
 git clone https://github.com/chimin14/JobDrop.git
 
-# Backend setup
+# Backend Setup
 cd jobdrop\backend
 npm install
 node seed.js
 npm install bcryptjs
 npm install zod
 Npx nodemon server.js
+
+# Backend Inline:
+cd jobdrop\backend; npm install; node seed.js npm install bcryptjs zod; Npx nodemon server.js
 
 # Create .env file
 cat <<EOF > .env
@@ -88,14 +91,14 @@ EOF
 
 npm run dev   # Backend at http://localhost:5001
 
-# Seed database
-node seed.js
-
 # Frontend setup (new/seperate terminal)
 cd jobdrop\app
 npm install
 npm run build
 npm run dev
+
+# Frontend Inline:
+cd jobdrop\app; npm install; npm run build; npm run dev
 ````
 
 ---
