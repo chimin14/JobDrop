@@ -72,8 +72,7 @@ Express  ────────────► MongoDB
 git clone https://github.com/chimin14/JobDrop.git
 
 # Backend setup
-cd jobdrop
-cd backend
+cd jobdrop\backend
 npm install
 node seed.js
 npm install bcryptjs
@@ -93,8 +92,7 @@ npm run dev   # Backend at http://localhost:5001
 node seed.js
 
 # Frontend setup (new/seperate terminal)
-cd jobdrop
-cd app
+cd jobdrop\app
 npm install
 npm run build
 npm run dev
