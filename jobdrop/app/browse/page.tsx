@@ -2,387 +2,476 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-
+import UserReviews from '../components/UserReviews';
+import ReviewModal from '../components/ReviewModal';
 type Job = {
-  title: string;
-  description: string;
-  date: string;
-  location: string;
-  industry: string;
-  qualifications: string;
-  jobFunction: string;
-  department: string;
-  employmentType: string;
-  experienceLevel: string;
-  positions: string;
-  salaryRange: string;
-  notes: string;
-  category: string;
+  _id: string;
+  JobTitle: string;
+  Description: string;
+  Location: string;
+  Category?: string;
+  Pay?: number;
+  Time?: string;
+  WorkFromLocation?: string;
+  notes?: string;
+  poster?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  applicants?: string[];
+  status?: string;
+  createdAt?: string;
 };
 
-const jobData: Job[] = [
-  {
-    title: 'Frontend Developer',
-    description: 'Create and maintain UI components for web apps.',
-    date: 'May 26, 2025',
-    location: 'Sarajevo',
-    industry: 'IT & Software Development',
-    qualifications: '2+ years experience, Bachelor’s degree in CS.',
-    jobFunction: 'Development',
-    department: 'Engineering',
-    employmentType: 'Weekly',
-    experienceLevel: '2',
-    positions: '1',
-    salaryRange: '800 KM - 1200 KM',
-    notes: 'React, Tailwind, Git experience required.',
-    category: 'Tech Help',
-  },
-  {
-    title: 'Marketing Intern',
-    description: 'Assist with social media and email campaigns.',
-    date: 'May 25, 2025',
-    location: 'Remote',
-    industry: 'Marketing & Advertising',
-    qualifications: 'Good writing skills, basic analytics knowledge.',
-    jobFunction: 'Outreach',
-    department: 'Marketing',
-    employmentType: 'Internship',
-    experienceLevel: '0-1',
-    positions: '2',
-    salaryRange: '200 KM - 400 KM',
-    notes: 'Remote work possible.',
-    category: 'Tutoring',
-  },
-  {
-    title: 'Babysitter for Toddler',
-    description: 'Watch a toddler during weekday evenings.',
-    date: 'May 20, 2025',
-    location: 'Grbavica',
-    industry: 'Childcare',
-    qualifications: 'Experience with children required.',
-    jobFunction: 'Caregiving',
-    department: 'Family Services',
-    employmentType: 'Weekly',
-    experienceLevel: '1',
-    positions: '1',
-    salaryRange: '150 KM - 250 KM',
-    notes: 'Prepare meals and playtime included.',
-    category: 'Babysitting',
-  },
-  {
-    title: 'Apartment Cleaner',
-    description: 'Clean 2-bedroom apartment, tools provided.',
-    date: 'May 24, 2025',
-    location: 'Ilidža',
-    industry: 'Cleaning & Grounds Maintenance',
-    qualifications: 'Basic cleaning skills and reliability.',
-    jobFunction: 'Cleaning',
-    department: 'Housekeeping',
-    employmentType: 'Weekly',
-    experienceLevel: '0-1',
-    positions: '1',
-    salaryRange: '100 KM - 200 KM',
-    notes: '1-2 hours of work.',
-    category: 'Cleaning',
-  },
-  {
-    title: 'Math Tutor - High School',
-    description: 'Provide support for algebra and geometry.',
-    date: 'May 23, 2025',
-    location: 'Novo Sarajevo',
-    industry: 'Education & Training',
-    qualifications: 'Math degree or tutoring experience.',
-    jobFunction: 'Tutoring',
-    department: 'Academics',
-    employmentType: 'Weekly',
-    experienceLevel: '1-3',
-    positions: '1',
-    salaryRange: '25 KM - 40 KM',
-    notes: 'Twice a week sessions.',
-    category: 'Tutoring',
-  },
-  {
-    title: 'Dog Walker - 1 Week',
-    description: 'Walk a small dog daily for 30 minutes.',
-    date: 'May 22, 2025',
-    location: 'Otoka',
-    industry: 'Animal Care',
-    qualifications: 'Comfortable with animals, punctual.',
-    jobFunction: 'Pet Care',
-    department: 'Pet Services',
-    employmentType: 'Temporary',
-    experienceLevel: '0',
-    positions: '1',
-    salaryRange: '15 KM - 25 KM',
-    notes: 'Leash and treats provided.',
-    category: 'Pet Care',
-  },
-  {
-    title: 'Fix Bathroom Sink',
-    description: 'Resolve a leak in the bathroom faucet.',
-    date: 'May 22, 2025',
-    location: 'Stari Grad',
-    industry: 'Plumbing',
-    qualifications: 'Previous plumbing experience required.',
-    jobFunction: 'Repair',
-    department: 'Maintenance',
-    employmentType: 'One-time',
-    experienceLevel: '2+',
-    positions: '1',
-    salaryRange: '45 KM - 55 KM',
-    notes: 'Bring your own tools.',
-    category: 'Tech Help',
-  },
-  {
-    title: 'Grocery Delivery',
-    description: 'Deliver a short grocery list to an elderly person.',
-    date: 'May 21, 2025',
-    location: 'Grbavica',
-    industry: 'Delivery',
-    qualifications: 'Must have a car.',
-    jobFunction: 'Delivery',
-    department: 'Local Service',
-    employmentType: 'One-time',
-    experienceLevel: '0',
-    positions: '1',
-    salaryRange: '20 KM - 30 KM',
-    notes: 'Afternoon delivery preferred.',
-    category: 'Delivery',
-  },
-  {
-    title: 'IT Support Setup',
-    description: 'Help with setting up Wi-Fi and printer.',
-    date: 'May 20, 2025',
-    location: 'Dobrinja',
-    industry: 'IT & Software Development',
-    qualifications: 'Basic networking knowledge.',
-    jobFunction: 'Support',
-    department: 'Tech Services',
-    employmentType: 'One-time',
-    experienceLevel: '1',
-    positions: '1',
-    salaryRange: '30 KM - 50 KM',
-    notes: 'Router and devices are ready.',
-    category: 'Tech Help',
-  },
-  {
-    title: 'Move Sofa',
-    description: 'Help lift and move sofa to new apartment.',
-    date: 'May 19, 2025',
-    location: 'Centar',
-    industry: 'Transportation & Delivery',
-    qualifications: 'Physically able to lift 50kg.',
-    jobFunction: 'Labor',
-    department: 'Logistics',
-    employmentType: 'One-time',
-    experienceLevel: '0',
-    positions: '2',
-    salaryRange: '40 KM - 60 KM',
-    notes: 'Truck provided.',
-    category: 'Delivery',
-  },
-  {
-    title: 'Childcare for 2 Kids',
-    description: 'Evening babysitting for two children (ages 3 & 6).',
-    date: 'May 18, 2025',
-    location: 'Vogošća',
-    industry: 'Childcare',
-    qualifications: 'Experience with kids, CPR preferred.',
-    jobFunction: 'Babysitting',
-    department: 'Family Services',
-    employmentType: 'Weekly',
-    experienceLevel: '1-2',
-    positions: '1',
-    salaryRange: '60 KM - 100 KM',
-    notes: 'Dinner will be ready.',
-    category: 'Babysitting',
-  },
-  {
-    title: 'Garden Cleanup',
-    description: 'Trim hedges, pull weeds, tidy up yard.',
-    date: 'May 17, 2025',
-    location: 'Ilidža',
-    industry: 'Gardening',
-    qualifications: 'Own tools preferred.',
-    jobFunction: 'Maintenance',
-    department: 'Landscaping',
-    employmentType: 'Weekly',
-    experienceLevel: '0-2',
-    positions: '1',
-    salaryRange: '50 KM - 80 KM',
-    notes: 'Flexible hours.',
-    category: 'Cleaning',
-  },
-  {
-    title: 'Package Pickup & Drop-off',
-    description: 'Pickup at warehouse, deliver to apartment.',
-    date: 'May 16, 2025',
-    location: 'Novi Grad',
-    industry: 'Delivery',
-    qualifications: 'Driver\'s license required.',
-    jobFunction: 'Delivery',
-    department: 'Transport',
-    employmentType: 'Temporary',
-    experienceLevel: '1',
-    positions: '1',
-    salaryRange: '35 KM - 45 KM',
-    notes: 'Navigation provided.',
-    category: 'Delivery',
-  },
-  {
-    title: 'Laptop Setup',
-    description: 'Help configure a new laptop and software.',
-    date: 'May 15, 2025',
-    location: 'Remote',
-    industry: 'Tech Help',
-    qualifications: 'Familiarity with Windows and Office Suite.',
-    jobFunction: 'Setup',
-    department: 'Support',
-    employmentType: 'One-time',
-    experienceLevel: '0-1',
-    positions: '1',
-    salaryRange: '30 KM - 50 KM',
-    notes: 'Via Zoom or in-person.',
-    category: 'Tech Help',
-  },
-  {
-    title: 'Wash Windows',
-    description: 'Clean windows on ground floor apartment.',
-    date: 'May 14, 2025',
-    location: 'Stup',
-    industry: 'Cleaning',
-    qualifications: 'No fear of heights, reliable.',
-    jobFunction: 'Cleaning',
-    department: 'Facilities',
-    employmentType: 'One-time',
-    experienceLevel: '0',
-    positions: '1',
-    salaryRange: '40 KM - 60 KM',
-    notes: 'Supplies available.',
-    category: 'Cleaning',
-  }
-];
 export default function BrowseJobsPage() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || '';
 
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(initialCategory);
   const [location, setLocation] = useState('');
   const [sort, setSort] = useState('default');
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isApplying, setIsApplying] = useState(false);
+  
+  // Reviews state
+  const [showPosterReviews, setShowPosterReviews] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewTarget, setReviewTarget] = useState<{id: string, name: string} | null>(null);
 
-  const categories = [...new Set(jobData.map((job) => job.category))].sort();
-  const locations = [...new Set(jobData.map((job) => job.location))].sort();
+  // Fetch jobs from backend
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
-  const filteredJobs = jobData
-    .filter(
-      (job) =>
-        job.title.toLowerCase().includes(search.toLowerCase()) &&
-        (!category || job.category === category) &&
-        (!location || job.location === location)
-    )
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://localhost:5001/api/jobs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch jobs');
+      }
+
+      const data = await response.json();
+      setJobs(data);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+      setError('Failed to load jobs. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Apply to a job
+  const handleApply = async (jobId: string) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login to apply for jobs');
+      window.location.href = '/login';
+      return;
+    }
+
+    setIsApplying(true);
+    try {
+      const response = await fetch(`http://localhost:5001/api/jobs/${jobId}/apply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('🎉 Application submitted successfully!');
+        // Refresh jobs to update applicant count
+        fetchJobs();
+        setSelectedJob(null);
+      } else {
+        alert(`❌ ${data.message || 'Failed to apply'}`);
+      }
+    } catch (error) {
+      console.error('Error applying to job:', error);
+      alert('❌ Network error. Please try again.');
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  // Handle contacting job poster
+  const handleContactPoster = (job: Job) => {
+    if (job.poster?.email) {
+      const subject = encodeURIComponent(`JobDrop: Question about "${job.JobTitle}"`);
+      const body = encodeURIComponent(`Hi ${job.poster.name},\n\nI'm interested in your job "${job.JobTitle}" on JobDrop and wanted to ask a question.\n\nBest regards`);
+      window.open(`mailto:${job.poster.email}?subject=${subject}&body=${body}`);
+    }
+  };
+
+  // Handle leaving a review for job poster
+  const handleReviewPoster = (job: Job) => {
+    if (job.poster) {
+      setReviewTarget({ id: job.poster._id, name: job.poster.name });
+      setShowReviewModal(true);
+    }
+  };
+
+  // Get unique categories and locations from jobs
+  const categories = [...new Set(jobs.map((job) => job.Category).filter(Boolean))].sort();
+  const locations = [...new Set(jobs.map((job) => job.Location).filter(Boolean))].sort();
+
+  // Filter and sort jobs
+  const filteredJobs = jobs
+    .filter((job) => {
+      const matchesSearch = job.JobTitle.toLowerCase().includes(search.toLowerCase()) ||
+                           job.Description.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = !category || job.Category === category;
+      const matchesLocation = !location || job.Location === location;
+      
+      return matchesSearch && matchesCategory && matchesLocation;
+    })
     .sort((a, b) => {
-      if (sort === 'asc') return parseInt(a.salaryRange) - parseInt(b.salaryRange);
-      if (sort === 'desc') return parseInt(b.salaryRange) - parseInt(a.salaryRange);
+      if (sort === 'asc') return (a.Pay || 0) - (b.Pay || 0);
+      if (sort === 'desc') return (b.Pay || 0) - (a.Pay || 0);
+      if (sort === 'newest') return new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime();
       return 0;
     });
 
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return 'Recently posted';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const formatPay = (pay?: number) => {
+    if (!pay) return 'Pay not specified';
+    return `${pay} KM`;
+  };
+
+  if (loading) {
+    return (
+      <main className="p-6 max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-blue-900 mb-6">Browse Jobs</h1>
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
+          <span className="ml-3 text-gray-600">Loading jobs...</span>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="p-6 max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-blue-900 mb-6">Browse Jobs</h1>
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          {error}
+          <button 
+            onClick={fetchJobs}
+            className="ml-2 underline hover:no-underline"
+          >
+            Try Again
+          </button>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-blue-900 mb-6">Browse Jobs</h1>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-blue-900">Browse Jobs</h1>
+          <p className="text-gray-600">Find quick gigs and part-time work near you</p>
+        </div>
+        <div className="text-sm text-gray-500">
+          {filteredJobs.length} job{filteredJobs.length !== 1 ? 's' : ''} available
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="mb-8 grid gap-4 md:grid-cols-4">
         <input
           type="text"
           placeholder="Search jobs..."
-          className="border border-gray-300 px-4 py-2 rounded w-full"
+          className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border border-gray-300 px-4 py-2 rounded w-full"
+          className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">All Categories</option>
           {categories.map((cat) => (
-            <option key={cat}>{cat}</option>
+            <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
         <select
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="border border-gray-300 px-4 py-2 rounded w-full"
+          className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">All Locations</option>
           {locations.map((loc) => (
-            <option key={loc}>{loc}</option>
+            <option key={loc} value={loc}>{loc}</option>
           ))}
         </select>
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
-          className="border border-gray-300 px-4 py-2 rounded w-full"
+          className="border border-gray-300 px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
-          <option value="default">Sort by Salary</option>
-          <option value="asc">Lowest to Highest</option>
-          <option value="desc">Highest to Lowest</option>
+          <option value="default">Sort by</option>
+          <option value="newest">Newest First</option>
+          <option value="asc">Lowest Pay</option>
+          <option value="desc">Highest Pay</option>
         </select>
       </div>
 
-      {/* Cards */}
+      {/* Empty State */}
+      {filteredJobs.length === 0 && !loading && (
+        <div className="text-center py-12">
+          <div className="mb-4">
+            <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No jobs found</h3>
+          <p className="text-gray-600 mb-4">
+            {search || category || location 
+              ? 'Try adjusting your filters to see more results.' 
+              : 'No jobs have been posted yet. Check back later!'}
+          </p>
+          {(search || category || location) && (
+            <button
+              onClick={() => {
+                setSearch('');
+                setCategory('');
+                setLocation('');
+              }}
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              Clear all filters
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Job Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-20">
-        {filteredJobs.map((job, index) => (
+        {filteredJobs.map((job) => (
           <div
-            key={index}
-            className="w-full p-6 rounded-xl bg-gradient-to-r from-purple-500 to-purple-300 relative overflow-hidden shadow-md text-white"
+            key={job._id}
+            className="w-full p-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 relative overflow-hidden shadow-md text-white hover:shadow-lg transition-shadow"
           >
             <div className="z-10 relative">
-              <h2 className="text-2xl font-bold mb-2">{job.title}</h2>
-              <p className="text-sm mb-1"><strong>Location:</strong> {job.location}</p>
-              <p className="text-sm mb-1"><strong>Salary:</strong> {job.salaryRange}</p>
+              <h2 className="text-xl font-bold mb-2">{job.JobTitle}</h2>
+              <p className="text-sm mb-1 opacity-90">
+                <strong>📍</strong> {job.Location}
+              </p>
+              <p className="text-sm mb-1 opacity-90">
+                <strong>💰</strong> {formatPay(job.Pay)}
+              </p>
+              {job.Time && (
+                <p className="text-sm mb-1 opacity-90">
+                  <strong>⏰</strong> {job.Time}
+                </p>
+              )}
+              {job.Category && (
+                <p className="text-sm mb-1 opacity-90">
+                  <strong>🏷️</strong> {job.Category}
+                </p>
+              )}
+              <p className="text-xs mb-3 opacity-75">
+                Posted {formatDate(job.createdAt)}
+              </p>
+              
               <button
                 onClick={() => setSelectedJob(job)}
-                className="mt-4 px-4 py-2 bg-purple-700 hover:bg-purple-800 rounded font-semibold"
+                className="w-full mt-4 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-semibold backdrop-blur-sm transition"
               >
-                View Details
+                View Details & Apply
               </button>
             </div>
-            <div className="absolute -top-12 -right-12 w-36 h-36 bg-gradient-to-r from-purple-600 to-purple-300 rounded-full z-0 opacity-30" />
+            <div className="absolute -top-12 -right-12 w-36 h-36 bg-gradient-to-r from-white/10 to-white/5 rounded-full z-0" />
           </div>
         ))}
       </div>
 
-      {/* Modal */}
+      {/* Job Detail Modal */}
       {selectedJob && (
         <div
-          className="fixed inset-0 z-50 bg-white/30 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setSelectedJob(null)}
         >
           <div
-            className="bg-white p-6 rounded-2xl w-full max-w-md shadow-xl relative"
+            className="bg-white rounded-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              className="absolute top-2 right-3 text-gray-400 hover:text-red-500 text-xl"
-              onClick={() => setSelectedJob(null)}
-            >
-              ✕
-            </button>
-            <h2 className="text-2xl font-bold text-blue-900 mb-3">{selectedJob.title}</h2>
-            <p className="text-sm text-gray-600"><strong>Description:</strong> {selectedJob.description}</p>
-            <p className="text-sm text-gray-600"><strong>Location:</strong> {selectedJob.location}</p>
-            <p className="text-sm text-gray-600"><strong>Industry:</strong> {selectedJob.industry}</p>
-            <p className="text-sm text-gray-600"><strong>Qualifications:</strong> {selectedJob.qualifications}</p>
-            <p className="text-sm text-gray-600"><strong>Job Function:</strong> {selectedJob.jobFunction}</p>
-            <p className="text-sm text-gray-600"><strong>Department:</strong> {selectedJob.department}</p>
-            <p className="text-sm text-gray-600"><strong>Employment Type:</strong> {selectedJob.employmentType}</p>
-            <p className="text-sm text-gray-600"><strong>Experience:</strong> {selectedJob.experienceLevel} years</p>
-            <p className="text-sm text-gray-600"><strong>Positions:</strong> {selectedJob.positions}</p>
-            <p className="text-sm text-gray-600"><strong>Salary:</strong> {selectedJob.salaryRange}</p>
-            <p className="text-sm text-gray-600"><strong>Notes:</strong> {selectedJob.notes}</p>
+            {/* Header */}
+            <div className="bg-blue-600 text-white p-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">{selectedJob.JobTitle}</h2>
+                  {selectedJob.poster && (
+                    <div className="flex items-center gap-3">
+                      <p className="text-blue-100">
+                        <strong>Posted by:</strong> {selectedJob.poster.name}
+                      </p>
+                      <button
+                        onClick={() => setShowPosterReviews(true)}
+                        className="text-blue-200 hover:text-white text-sm underline"
+                      >
+                        View Reviews
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => setSelectedJob(null)}
+                  className="text-white hover:text-red-300 text-2xl font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto max-h-[50vh]">
+              <div className="space-y-3 text-sm text-gray-700 mb-6">
+                <p><strong>Description:</strong> {selectedJob.Description}</p>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <p><strong>📍 Location:</strong> {selectedJob.Location}</p>
+                  <p><strong>💰 Pay:</strong> {formatPay(selectedJob.Pay)}</p>
+                </div>
+                
+                {selectedJob.Time && (
+                  <p><strong>⏰ Duration:</strong> {selectedJob.Time}</p>
+                )}
+                
+                {selectedJob.Category && (
+                  <p><strong>🏷️ Category:</strong> {selectedJob.Category}</p>
+                )}
+                
+                {selectedJob.WorkFromLocation && (
+                  <p><strong>🏠 Remote Work:</strong> {selectedJob.WorkFromLocation}</p>
+                )}
+                
+                {selectedJob.notes && (
+                  <p><strong>📝 Additional Notes:</strong> {selectedJob.notes}</p>
+                )}
+                
+                {selectedJob.applicants && (
+                  <p><strong>👥 Applicants:</strong> {selectedJob.applicants.length} people applied</p>
+                )}
+                
+                <p className="text-xs text-gray-500">
+                  Posted on {formatDate(selectedJob.createdAt)}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="bg-gray-50 px-6 py-4">
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  onClick={() => setSelectedJob(null)}
+                  className="flex-1 bg-gray-200 text-gray-800 px-4 py-3 rounded-lg hover:bg-gray-300 transition font-medium"
+                >
+                  Close
+                </button>
+                {selectedJob.poster && (
+                  <>
+                    <button
+                      onClick={() => handleContactPoster(selectedJob)}
+                      className="flex-1 bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition font-medium"
+                    >
+                      📧 Contact Poster
+                    </button>
+                    <button
+                      onClick={() => handleReviewPoster(selectedJob)}
+                      className="flex-1 bg-yellow-500 text-white px-4 py-3 rounded-lg hover:bg-yellow-600 transition font-medium"
+                    >
+                      ⭐ Review Poster
+                    </button>
+                  </>
+                )}
+                <button
+                  onClick={() => handleApply(selectedJob._id)}
+                  disabled={isApplying}
+                  className="flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isApplying ? 'Applying...' : 'Apply Now 🚀'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && selectedJob && reviewTarget && (
+        <ReviewModal
+          isOpen={showReviewModal}
+          onClose={() => {
+            setShowReviewModal(false);
+            setReviewTarget(null);
+          }}
+          jobId={selectedJob._id}
+          jobTitle={selectedJob.JobTitle}
+          rateeId={reviewTarget.id}
+          rateeName={reviewTarget.name}
+          onReviewSubmitted={() => {
+            console.log('Review submitted successfully!');
+            setSelectedJob(null);
+          }}
+        />
+      )}
+
+      {/* Poster Reviews Modal */}
+      {showPosterReviews && selectedJob?.poster && (
+        <div
+          className="fixed inset-0 z-60 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowPosterReviews(false)}
+        >
+          <div
+            className="bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-900">
+                  Reviews for {selectedJob.poster.name}
+                </h3>
+                <button
+                  onClick={() => setShowPosterReviews(false)}
+                  className="text-gray-400 hover:text-red-500 text-xl"
+                >
+                  ✕
+                </button>
+              </div>
+              <UserReviews 
+                userId={selectedJob.poster._id} 
+                userName={selectedJob.poster.name} 
+              />
+            </div>
           </div>
         </div>
       )}

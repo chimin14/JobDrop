@@ -2,52 +2,52 @@
 
 import { useEffect, useState } from 'react';
 
-const jobTitleSuggestions = [
-  "Delivery Driver", "Cleaning Assistant", "Babysitter", "Dog Walker", "Private Tutor",
-  "Gardener", "Grocery Shopper", "Mover", "Event Helper"
+const quickJobSuggestions = [
+  "Help me move furniture", "Walk my dog", "Clean my apartment", "Babysit for evening",
+  "Deliver groceries", "Tutor my kid in math", "Help with gardening", "Paint a room",
+  "Computer help", "Event photography", "Food delivery", "House sitting"
 ];
 
 const locationOptions = [
-  "Remote", "Sarajevo", "Banja Luka", "Mostar", "Tuzla", "Zenica", "Brčko",
-  "Bihać", "Travnik", "Goražde", "New York, NY", "Chicago, IL", "Las Vegas, NV"
+  "Sarajevo", "Banja Luka", "Mostar", "Tuzla", "Zenica", "Brčko",
+  "Bihać", "Travnik", "Goražde", "Online/Remote"
+];
+
+const categoryOptions = [
+  "Cleaning & Household", "Delivery & Transport", "Tutoring & Education", 
+  "Pet Care", "Moving & Labor", "Tech Help", "Creative & Design",
+  "Event Help", "Childcare", "Yard Work", "Other"
 ];
 
 export default function PostJobPage() {
   const [mounted, setMounted] = useState(false);
-
-  const [title, setTitle] = useState('');
-  const [filteredTitles, setFilteredTitles] = useState<string[]>([]);
+  
+  // Required fields
+  const [jobTitle, setJobTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
+  const [duration, setDuration] = useState('');
+  const [whoCanApply, setWhoCanApply] = useState('');
+  
+  // Optional fields
+  const [category, setCategory] = useState('');
+  const [pay, setPay] = useState('');
+  const [notes, setNotes] = useState('');
+  
+  const [filteredTitles, setFilteredTitles] = useState<string[]>([]);
   const [filteredLocations, setFilteredLocations] = useState<string[]>([]);
-  const [employerType, setEmployerType] = useState('My Organization');
-  const [industry, setIndustry] = useState('');
-  const [jobFunction, setJobFunction] = useState('');
-  const [department, setDepartment] = useState('');
-  const [employmentType, setEmploymentType] = useState('Full Time');
-  const [experience, setExperience] = useState('');
-  const [positions, setPositions] = useState('');
-  const [salaryMin, setSalaryMin] = useState('');
-  const [salaryMax, setSalaryMax] = useState('');
-  const [publishType, setPublishType] = useState('Public');
-  const [qualifications, setQualifications] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => setMounted(true), []);
 
   const validateFields = () => {
     const fieldErrors: { [key: string]: boolean } = {};
-    if (!title) fieldErrors.title = true;
-    if (!description) fieldErrors.description = true;
-    if (!location) fieldErrors.location = true;
-    if (!industry) fieldErrors.industry = true;
-    if (!jobFunction) fieldErrors.jobFunction = true;
-    if (!department) fieldErrors.department = true;
-    if (!experience) fieldErrors.experience = true;
-    if (!positions) fieldErrors.positions = true;
-    if (!salaryMin) fieldErrors.salaryMin = true;
-    if (!salaryMax) fieldErrors.salaryMax = true;
-    if (!qualifications) fieldErrors.qualifications = true;
+    if (!jobTitle.trim()) fieldErrors.jobTitle = true;
+    if (!description.trim()) fieldErrors.description = true;
+    if (!location.trim()) fieldErrors.location = true;
+    if (!duration) fieldErrors.duration = true;
+    if (!whoCanApply) fieldErrors.whoCanApply = true;
+    
     setErrors(fieldErrors);
     return Object.keys(fieldErrors).length === 0;
   };
@@ -55,85 +55,126 @@ export default function PostJobPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateFields()) return;
-  
-    const newJob = {
-      PostingID: `J${Date.now()}`,
-      Pay: Number(salaryMax),
-      JobTitle: title,
-      Description: description,
-      Time: "Flexible",
-      Location: location,
-      WorkFromLocation: employmentType === "Remote" ? "Yes" : "No",
-      Category: industry,
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please login to post a job');
+      window.location.href = '/login';
+      return;
+    }
+
+    const jobData = {
+      JobTitle: jobTitle.trim(),
+      Description: description.trim(),
+      Location: location.trim(),
+      Category: category || 'Other',
+      Pay: pay ? Number(pay) : null,
+      Time: duration,
+      WorkFromLocation: location.toLowerCase().includes('remote') || location.toLowerCase().includes('online') ? 'Yes' : 'No',
+      notes: notes.trim() || undefined
     };
-  
+
     try {
-      const res = await fetch("http://localhost:5001/api/jobPostings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newJob),
+      const res = await fetch('http://localhost:5001/api/jobs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(jobData),
       });
-  
+
       if (res.ok) {
-        alert("✅ Job submitted and saved to MongoDB!");
-        // Optionally reset form
-        setTitle(""); setDescription(""); setLocation(""); setIndustry("");
-        setQualifications(""); setJobFunction(""); setDepartment("");
-        setExperience(""); setPositions(""); setSalaryMin(""); setSalaryMax("");
+        alert('🎉 Job posted successfully!');
+        // Reset form
+        setJobTitle(''); setDescription(''); setLocation(''); setDuration('');
+        setWhoCanApply(''); setCategory(''); setPay(''); setNotes('');
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
       } else {
-        alert("❌ Submission failed.");
+        const errorData = await res.json();
+        alert(`❌ Failed to post job: ${errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
-      alert("❌ Server error.");
-      console.error("POST error:", error);
+      alert('❌ Network error. Please try again.');
+      console.error('POST error:', error);
     }
   };
-  
 
   if (!mounted) return null;
 
   const inputClass = (field: string) =>
-    `mt-1 w-full border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded px-4 py-2`;
+    `w-full border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent`;
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-blue-900 mb-2">Post a New Job</h1>
-      <p className="text-gray-600 mb-6">
-        Please fill out all fields below to publish a job listing on JobDrop. All entries are required.
-      </p>
+    <main className="p-6 max-w-2xl mx-auto">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-900 mb-2">Post a Quick Job</h1>
+        <p className="text-gray-600">
+          Need help with something? Post it here and find someone nearby to help!
+        </p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded shadow">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-xl shadow-lg">
+        
         {/* Job Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Job Title</label>
-          <input
-            type="text"
-            className={inputClass('title')}
-            value={title}
-            onChange={(e) => {
-              const val = e.target.value;
-              setTitle(val);
-              setFilteredTitles(val.length > 0 ? jobTitleSuggestions.filter((t) => t.toLowerCase().includes(val.toLowerCase())) : []);
-            }}
-          />
-          {errors.title && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            What do you need help with? *
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              className={inputClass('jobTitle')}
+              value={jobTitle}
+              onChange={(e) => {
+                const val = e.target.value;
+                setJobTitle(val);
+                setFilteredTitles(val.length > 0 ? quickJobSuggestions.filter((t) => 
+                  t.toLowerCase().includes(val.toLowerCase())) : []);
+              }}
+              placeholder="e.g., Help me move furniture, Walk my dog, Clean my apartment..."
+            />
+            {filteredTitles.length > 0 && (
+              <ul className="absolute z-10 bg-white w-full border rounded-lg mt-1 max-h-40 overflow-auto shadow-lg">
+                {filteredTitles.map((title) => (
+                  <li
+                    key={title}
+                    onClick={() => {
+                      setJobTitle(title);
+                      setFilteredTitles([]);
+                    }}
+                    className="px-4 py-2 cursor-pointer hover:bg-blue-50 text-sm"
+                  >
+                    {title}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {errors.jobTitle && <p className="text-red-500 text-sm mt-1">Please describe what you need help with</p>}
         </div>
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            More details *
+          </label>
           <textarea
             className={inputClass('description')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter a detailed job description..."
+            placeholder="Give more details about the job... What exactly needs to be done? Any special requirements?"
+            rows={4}
           />
-          {errors.description && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
+          {errors.description && <p className="text-red-500 text-sm mt-1">Please provide more details</p>}
         </div>
 
-        {/* Location Autocomplete */}
+        {/* Location */}
         <div className="relative">
-          <label className="block text-sm font-medium text-gray-700">Location</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Where? *
+          </label>
           <input
             type="text"
             className={inputClass('location')}
@@ -141,12 +182,13 @@ export default function PostJobPage() {
             onChange={(e) => {
               const val = e.target.value;
               setLocation(val);
-              setFilteredLocations(val.length > 0 ? locationOptions.filter((loc) => loc.toLowerCase().includes(val.toLowerCase())) : []);
+              setFilteredLocations(val.length > 0 ? locationOptions.filter((loc) => 
+                loc.toLowerCase().includes(val.toLowerCase())) : []);
             }}
+            placeholder="City or 'Online/Remote'"
           />
-          {errors.location && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
           {filteredLocations.length > 0 && (
-            <ul className="absolute z-10 bg-white w-full border rounded mt-1 max-h-52 overflow-auto shadow-md">
+            <ul className="absolute z-10 bg-white w-full border rounded-lg mt-1 max-h-40 overflow-auto shadow-lg">
               {filteredLocations.map((loc) => (
                 <li
                   key={loc}
@@ -154,150 +196,109 @@ export default function PostJobPage() {
                     setLocation(loc);
                     setFilteredLocations([]);
                   }}
-                  className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+                  className="px-4 py-2 cursor-pointer hover:bg-blue-50 text-sm"
                 >
                   {loc}
                 </li>
               ))}
             </ul>
           )}
+          {errors.location && <p className="text-red-500 text-sm mt-1">Please specify the location</p>}
         </div>
 
-        {/* Industry Dropdown */}
+        {/* Duration */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Industry</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            How long will it take? *
+          </label>
           <select
-            className={inputClass('industry')}
-            value={industry}
-            onChange={(e) => setIndustry(e.target.value)}
+            className={inputClass('duration')}
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
           >
-            <option value="">Select an Industry</option>
-            <option>Administrative & Business Operations</option>
-            <option>Architecture & Engineering</option>
-            <option>Cleaning & Grounds Maintenance</option>
-            <option>Community & Human Services</option>
-            <option>Construction & Labor</option>
-            <option>Creative & Design</option>
-            <option>Customer Support</option>
-            <option>Education & Training</option>
-            <option>Healthcare & Wellness</option>
-            <option>Hospitality & Food Service</option>
-            <option>IT & Software Development</option>
-            <option>Legal</option>
-            <option>Marketing & Advertising</option>
-            <option>Retail & Sales</option>
-            <option>Transportation & Delivery</option>
-            <option>Other</option>
+            <option value="">Select duration</option>
+            <option value="1-2 hours">1-2 hours</option>
+            <option value="Half day (3-4 hours)">Half day (3-4 hours)</option>
+            <option value="Full day">Full day</option>
+            <option value="2-3 days">2-3 days</option>
+            <option value="1 week">1 week</option>
+            <option value="Ongoing/Regular">Ongoing/Regular</option>
+            <option value="One time">One time</option>
           </select>
-          {errors.industry && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
+          {errors.duration && <p className="text-red-500 text-sm mt-1">Please select duration</p>}
         </div>
 
-        {/* Qualifications */}
+        {/* Who Can Apply */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Qualifications</label>
-          <textarea
-            className={inputClass('qualifications')}
-            value={qualifications}
-            onChange={(e) => setQualifications(e.target.value)}
-            placeholder="List key qualifications or requirements..."
-          />
-          {errors.qualifications && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Who can apply? *
+          </label>
+          <select
+            className={inputClass('whoCanApply')}
+            value={whoCanApply}
+            onChange={(e) => setWhoCanApply(e.target.value)}
+          >
+            <option value="">Choose who can apply</option>
+            <option value="Anyone">Anyone</option>
+            <option value="Students only">Students only</option>
+            <option value="Adults (18+)">Adults (18+)</option>
+            <option value="Experienced only">Experienced only</option>
+            <option value="Teens (16+)">Teens (16+)</option>
+          </select>
+          {errors.whoCanApply && <p className="text-red-500 text-sm mt-1">Please specify who can apply</p>}
         </div>
 
-        {/* Job Function */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Job Function</label>
-          <input
-            type="text"
-            className={inputClass('jobFunction')}
-            value={jobFunction}
-            onChange={(e) => setJobFunction(e.target.value)}
-          />
-          {errors.jobFunction && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
-        </div>
-
-        {/* Department */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Department</label>
-          <input
-            type="text"
-            className={inputClass('department')}
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-          />
-          {errors.department && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
-        </div>
-
-        {/* Employment Details */}
-        <div className="border border-gray-200 rounded p-4">
-          <h3 className="text-md font-semibold text-gray-700 mb-4">Employment Details</h3>
-          <div className="grid grid-cols-2 gap-4">
+        {/* Optional Fields */}
+        <div className="border-t pt-6">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">Optional Details</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Category */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <select
-                value={employmentType}
-                onChange={(e) => setEmploymentType(e.target.value)}
-                className="w-full border border-gray-300 rounded px-4 py-2"
+                className="w-full border border-gray-300 rounded-lg px-4 py-3"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
               >
-                <option>Weekly</option>
-                <option>Monthly</option>
-                <option>Temporary</option>
-                <option>Internship</option>
+                <option value="">Select category</option>
+                {categoryOptions.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
               </select>
             </div>
 
+            {/* Pay */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
-              <input
-                type="text"
-                className={inputClass('experience')}
-                value={experience}
-                onChange={(e) => setExperience(e.target.value)}
-                placeholder="e.g. 1-3"
-              />
-              {errors.experience && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Positions</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Pay (KM)</label>
               <input
                 type="number"
-                className={inputClass('positions')}
-                value={positions}
-                onChange={(e) => setPositions(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-4 py-3"
+                value={pay}
+                onChange={(e) => setPay(e.target.value)}
+                placeholder="e.g., 50"
               />
-              {errors.positions && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
             </div>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Min Salary</label>
-              <input
-                type="number"
-                className={inputClass('salaryMin')}
-                value={salaryMin}
-                onChange={(e) => setSalaryMin(e.target.value)}
-              />
-              {errors.salaryMin && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Max Salary</label>
-              <input
-                type="number"
-                className={inputClass('salaryMax')}
-                value={salaryMax}
-                onChange={(e) => setSalaryMax(e.target.value)}
-              />
-              {errors.salaryMax && <p className="text-red-500 text-sm mt-1">This field is required.</p>}
-            </div>
+          {/* Additional Notes */}
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Additional Notes</label>
+            <textarea
+              className="w-full border border-gray-300 rounded-lg px-4 py-3"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Any other info that might be helpful..."
+              rows={3}
+            />
           </div>
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold text-lg"
         >
-          Submit Job
+          Post Job 🚀
         </button>
       </form>
     </main>

@@ -1,27 +1,72 @@
-export const login = async (email: string, password: string) => {
-    const res = await fetch('http://localhost:5001/api/auth/login', {
+// lib/auth.js
+const API_BASE_URL = 'http://localhost:5001/api';
+
+export const login = async (email, password) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ email, password }),
     });
-  
-    if (!res.ok) throw new Error('Login failed');
-    const data = await res.json();
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-  };
-  
-  export const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  };
-  
-  export const isAuthenticated = (): boolean => {
-    return Boolean(localStorage.getItem('token'));
-  };
-  
-  export const getUser = () => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  };
-  
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Login failed');
+    }
+
+    // Store the token in localStorage
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+};
+
+export const register = async (name, email, password) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Registration failed');
+    }
+
+    // Optionally store the token in localStorage for auto-login after registration
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};
+
+export const logout = () => {
+  localStorage.removeItem('token');
+  window.location.href = '/login';
+};
+
+export const getToken = () => {
+  return localStorage.getItem('token');
+};
+
+export const isAuthenticated = () => {
+  const token = getToken();
+  return !!token;
+};
