@@ -1,85 +1,145 @@
-# JobDrop
-
-**A Dedicated Gig Marketplace for Bosnia and Herzegovina**
-
----
-
-## 📌 Overview
-
-**JobDrop** is a purpose-built platform that connects individuals seeking short-term jobs with those offering them—tailored specifically for the market in Bosnia and Herzegovina. It addresses the inefficiencies of informal job-seeking methods such as Facebook groups and fills the gap left by international gig platforms which are either unavailable or not localized.
-
-By focusing on structure, security, and ease-of-use, JobDrop empowers users to find and offer work in a transparent, efficient, and trustworthy environment.
+# JobDrop  
+*A dedicated gig-marketplace for Bosnia and Herzegovina*
 
 ---
 
-## 🧠 Core Features
-
-- Structured job listings with clear payment, location, and category details
-- Filter and search functionality for job seekers
-- Direct messaging between job providers and workers
-- Mutual rating and review system to foster community trust
-- Commission-free: workers receive 100% of their earnings
-
----
-
-## 🧰 Technology Stack
-
-### Frontend
-- **Next.js** – Enables high performance, server-side rendering, and SEO optimization
-- **Tailwind CSS** – Provides a clean, responsive, and intuitive user interface
-
-### Backend
-- **Node.js** with **Express.js** – Scalable architecture with REST API support for real-time responsiveness
-- **MongoDB** – Flexible document-oriented database, ideal for handling dynamic job and user data
-
-### Security & Privacy
-- Secure user authentication and authorization
-- Encrypted data storage
-- Fraud detection and prevention systems
+## Table of Contents
+1. [Overview](#overview)  
+2. [Key Features](#key-features)  
+3. [Technology Stack](#technology-stack)  
+4. [System Architecture](#system-architecture)  
+5. [Local Deployment Guide](#local-deployment-guide)  
+6. [Deployment Notes](#deployment-notes)  
+7. [Repository Structure](#repository-structure)  
+8. [Team & Responsibilities](#team--responsibilities)  
+9. [Project Links](#project-links)
 
 ---
 
-## 💼 Monetization Strategy
-
-JobDrop adopts a sustainable and user-centric monetization model:
-
-- **Featured Listings** – Job providers can boost visibility by paying a small fee
-- **Verified Profiles** – Workers can opt for verification to increase trustworthiness
-- **Subscription Plans** – Small businesses can subscribe for unlimited job postings
-- **Local Advertising** – Targeted ad slots for regional businesses
+## Overview
+JobDrop connects job seekers with short-term work opportunities in Bosnia and Herzegovina, replacing informal Facebook-group hiring with a structured, secure, and mobile-friendly platform. The project was developed for **CS308 – Software Engineering** at International University of Sarajevo.
 
 ---
 
-## 🌍 Market Differentiation
-
-Unlike international platforms, **JobDrop is hyper-localized**, providing:
-
-- A platform designed for the cultural and economic context of Bosnia and Herzegovina
-- Instant communication and faster hiring without lengthy processes
-- A transparent ecosystem with no intermediaries or hidden fees
-
----
-
-## 👥 Target Users
-
-- Students seeking part-time or temporary work
-- Unemployed individuals looking for flexible income opportunities
-- Small businesses needing short-term labor
-- Anyone looking for a trusted alternative to disorganized job forums
+## Key Features
+- Structured job listings with payment, location, and category data  
+- Advanced filtering and search  
+- Real-time messaging (Socket.IO) between posters and seekers  
+- Ratings & reviews with automatic average scoring  
+- Admin dashboard for user, message, and review moderation  
+- Commission-free: workers keep **100%** of earnings _(Subject to change)_
 
 ---
 
-## 🧑‍💼 Team Leadership
+## Technology Stack
 
-**Amina Jusić** serves as our official group representative and visionary leader, guiding the development and execution of JobDrop with clarity and purpose.
+| Layer      | Tools & Frameworks                              |
+|------------|-------------------------------------------------|
+| Front-end  | Next.js 14, React 18, Tailwind CSS              |
+| Back-end   | Node.js 18, Express 4, Socket.IO, Multer        |
+| Database   | MongoDB Atlas (Mongoose ODM)                    |
+| Auth       | JSON Web Tokens (JWT), bcrypt                   |
+| Dev Ops    | Vercel (front-end), Render/Railway (back-end)   |
+| Docs/PM    | Overleaf (LaTeX), Trello for agile sprints      |
 
 ---
 
-## 🔚 Conclusion
+## System Architecture
+```
 
-**JobDrop** represents a meaningful step forward for the gig economy in Bosnia and Herzegovina. With its emphasis on speed, trust, and accessibility, it offers a practical solution to both job seekers and providers in an evolving market. More than a product, JobDrop is a platform for empowerment and economic mobility.
+client ─┬─▶  Next.js (pages/app folder)
+│
+├──▶  /api/\*         REST endpoints
+│
+└──▶  /socket.io     WebSocket channel (chat, notifications)
+
+Express  ────────────► MongoDB
+(controllers)          (users, jobs, messages, reviews, uploads)
+
+````
+- **Roles** are handled with a single `User` document (`role: seeker | poster | admin`).  
+- Real-time chat leverages **Socket.IO** with user-specific rooms.  
+- Images/docs are stored locally during development or optionally via Cloudinary.
 
 ---
 
-> **Build locally. Work directly. Grow together.**
+## Local Deployment Guide
 
+**Prerequisites:** Node.js 18+, npm, Git, MongoDB Atlas (or local MongoDB)
+
+```bash
+# Clone Repository
+git clone https://github.com/chimin14/JobDrop.git
+
+# Backend Setup
+cd jobdrop\backend
+npm install
+node seed.js
+npm install bcryptjs
+npm install zod
+Npx nodemon server.js
+
+# Backend Inline:
+cd jobdrop\backend; npm install; node seed.js; npm install bcryptjs zod; npx nodemon server.js
+
+# Create .env file
+cat <<EOF > .env
+PORT=5001
+MONGODB_URI=mongodb+srv://jobdrop:jobdrop123@cluster0.pitiiie.mongodb.net/
+JWT_SECRET=ThisIsAReallySecretKey123!@#
+EOF
+
+npm run dev   # Backend at http://localhost:5001
+
+# Frontend setup (new/seperate terminal)
+cd jobdrop\app
+npm install
+npm run build
+npm run dev
+
+# Frontend Inline:
+cd jobdrop\app; npm install; npm run build; npm run dev
+````
+
+---
+
+## Deployment Notes
+
+| Tier      | Recommended Provider | Steps                                                 |
+| --------- | -------------------- | ----------------------------------------------------- |
+| Front-end | **Vercel**           | `vercel --prod`                                       |
+| Back-end  | **Render / Railway** | Select “Node server” blueprint → add `.env` variables |
+| Database  | **MongoDB Atlas**    | Free shared cluster                                   |
+
+---
+
+## Repository Structure
+
+```
+backend/         Express server, Mongoose models, Socket.IO
+jobdrop/         Next.js client
+figures/         UML diagrams (UCD.png, ERD.png)
+docs/            Final report (PDF), JOBDROP.drawio
+```
+
+---
+
+## Team & Responsibilities
+
+| Member                                  | Responsibilities                                                                                           |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Amina Jusić** _(Team Representative)_ | Front-end UI & state; back-end integration; Socket.IO real-time; LaTeX documentation; overall coordination |
+| **Džejlan Čolakhodžić**                 | Front-end layouts, responsive design, component library                                                    |
+| **Harun Mezit**                         | Back-end APIs, authentication, database schema; produced all UML diagrams                                  |
+| **Dejan Šućur**                         | Back-end messaging & notification modules; deployment scripts; Trello sprint management; QA                |
+| **Omer Bećić**                          | Back-end reviews/ratings, file-upload service; co-author of documentation; Figma Design                    |
+
+---
+
+## Project Links
+
+* [**Final Report (PDF)**](Dokumentacija/JobDrop.pdf)
+* [**Trello Board**](https://trello.com/b/T5uUtwId/jobdrop)
+* [**Figma Design**](https://www.figma.com/design/ZhCREKItSLgKGJl7ChkMSF/Untitled?node-id=0-1&t=Eke49NtSy4tKUlcG-1)
+
+---
