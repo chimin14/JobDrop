@@ -73,10 +73,13 @@ git clone https://github.com/chimin14/JobDrop.git
 cd JobDrop
 
 # Backend setup
+cd jobdrop
 cd backend
-# Run this command in your backend directory to install zod
-npm install zod 
-npm install express@4.18
+npm install
+node seed.js
+npm install bcryptjs
+npm install zod
+Npx nodemon server.js
 
 # Create .env file
 cat <<EOF >.env
@@ -91,9 +94,11 @@ npm run dev   # Backend at http://localhost:5001
 node seed.js
 
 # Frontend setup (new terminal)
-cd ../jobdrop
-npx nodemon server.js
-npm run dev   # Frontend at http://localhost:3000
+cd jobdrop
+cd app
+npm install
+npm run build
+npm run dev
 ````
 
 ---
@@ -121,19 +126,20 @@ docs/            Final report (PDF), JOBDROP.drawio
 
 ## Team & Responsibilities
 
-| Member                                | Responsibilities                                                                                           |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Amina Jusić** (Team Representative) | Front-end UI & state; back-end integration; Socket.IO real-time; LaTeX documentation; overall coordination |
-| **Džejlan Čolakhodžić**               | Front-end layouts, responsive design, component library                                                    |
-| **Harun Mezit**                       | Back-end APIs, authentication, database schema; produced all UML diagrams                                  |
-| **Dejan Šućur**                       | Back-end messaging & notification modules; deployment scripts; Trello sprint management                    |
-| **Omer Bećić**                        | Back-end reviews/ratings, file-upload service; co-author of documentation; QA                              |
+| Member                                  | Responsibilities                                                                                           |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Amina Jusić** _(Team Representative)_ | Front-end UI & state; back-end integration; Socket.IO real-time; LaTeX documentation; overall coordination |
+| **Džejlan Čolakhodžić**                 | Front-end layouts, responsive design, component library                                                    |
+| **Harun Mezit**                         | Back-end APIs, authentication, database schema; produced all UML diagrams                                  |
+| **Dejan Šućur**                         | Back-end messaging & notification modules; deployment scripts; Trello sprint management; QA                |
+| **Omer Bećić**                          | Back-end reviews/ratings, file-upload service; co-author of documentation; Figma Design                    |
 
 ---
 
 ## Project Links
 
-* **Final report (PDF):** [`Dokumentacija/JobDrop.pdf`](Dokumentacija/JobDrop.pdf)
-* **Trello Board:** [https://trello.com/b/T5uUtwId/jobdrop](https://trello.com/b/T5uUtwId/jobdrop)
+* [**Final Report (PDF)**](Dokumentacija/JobDrop.pdf)
+* [**Trello Board**](https://trello.com/b/T5uUtwId/jobdrop)
+* [**Figma Design**](https://www.figma.com/design/ZhCREKItSLgKGJl7ChkMSF/Untitled?node-id=0-1&t=Eke49NtSy4tKUlcG-1)
 
 ---
