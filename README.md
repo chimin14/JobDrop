@@ -27,7 +27,7 @@ JobDrop connects job seekers with short-term work opportunities in Bosnia and He
 - Real-time messaging (Socket.IO) between posters and seekers  
 - Ratings & reviews with automatic average scoring  
 - Admin dashboard for user, message, and review moderation  
-- Commission-free: workers keep **100%** of earnings
+- Commission-free: workers keep **100%** of earnings _(Subject to change)_
 
 ---
 
@@ -70,7 +70,6 @@ Express  ────────────► MongoDB
 ```bash
 # Clone repository
 git clone https://github.com/chimin14/JobDrop.git
-cd JobDrop
 
 # Backend setup
 cd jobdrop
@@ -82,7 +81,7 @@ npm install zod
 Npx nodemon server.js
 
 # Create .env file
-cat <<EOF >.env
+cat <<EOF > .env
 PORT=5001
 MONGODB_URI=mongodb+srv://jobdrop:jobdrop123@cluster0.pitiiie.mongodb.net/
 JWT_SECRET=ThisIsAReallySecretKey123!@#
@@ -93,7 +92,7 @@ npm run dev   # Backend at http://localhost:5001
 # Seed database
 node seed.js
 
-# Frontend setup (new terminal)
+# Frontend setup (new/seperate terminal)
 cd jobdrop
 cd app
 npm install
