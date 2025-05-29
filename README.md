@@ -80,7 +80,7 @@ npm install zod
 Npx nodemon server.js
 
 # Backend Inline:
-cd jobdrop\backend; npm install; node seed.js npm install bcryptjs zod; Npx nodemon server.js
+cd jobdrop\backend; npm install; node seed.js; npm install bcryptjs zod; Npx nodemon server.js
 
 # Create .env file
 cat <<EOF > .env
